@@ -1,10 +1,7 @@
 import { test, expect, describe } from "vitest";
 import type { NamedType, TransformFunction, OrType } from "@xlr-lib/xlr";
 import { parseTree } from "jsonc-parser";
-import {
-  Types,
-  ReferenceAssetsWebPluginManifest,
-} from "@xlr-lib/static-xlrs";
+import { Types, ReferenceAssetsWebPluginManifest } from "@xlr-lib/static-xlrs";
 import type { Filters } from "../registry";
 import { XLRSDK } from "../sdk";
 import { XLRValidator } from "../validator";
