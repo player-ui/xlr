@@ -15,10 +15,7 @@ import type {
   ArrayType,
   OrType,
 } from "@xlr-lib/xlr";
-import type {
-  TopLevelDeclaration,
-  TopLevelNode,
-} from "@xlr-lib/xlr-utils";
+import type { TopLevelDeclaration, TopLevelNode } from "@xlr-lib/xlr-utils";
 import {
   buildTemplateRegex,
   decorateNode,

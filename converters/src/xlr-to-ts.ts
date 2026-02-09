@@ -13,10 +13,7 @@ import type {
   TupleType,
 } from "@xlr-lib/xlr";
 import type { TopLevelDeclaration } from "@xlr-lib/xlr-utils";
-import {
-  isGenericNamedType,
-  isPrimitiveTypeNode,
-} from "@xlr-lib/xlr-utils";
+import { isGenericNamedType, isPrimitiveTypeNode } from "@xlr-lib/xlr-utils";
 import ts from "typescript";
 import { ConversionError } from "./types";
 
