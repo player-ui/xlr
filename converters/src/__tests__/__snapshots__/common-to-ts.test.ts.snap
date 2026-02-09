@@ -1,0 +1,50 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Type Exports > Basic Type Conversion 1`] = `
+"/**
+ * User actions can be represented in several places.
+ * Each view typically has one or more actions that allow the user to navigate away from that view.
+ * In addition, several asset types can have actions that apply to that asset only.
+*/
+export interface ActionAsset<AnyTextAsset extends Asset = Asset> extends Asset<'action'> {
+    /** The transition value of the action in the state machine */
+    value?: string;
+    /** A text-like asset for the action's label */
+    label?: AssetWrapper<AnyTextAsset>;
+    /** An optional expression to execute before transitioning */
+    exp?: Expression;
+    /** An optional string that describes the action for screen-readers */
+    accessibility?: string;
+    /** Additional optional data to assist with the action interactions on the page */
+    metaData?: {
+        /** Additional data to beacon */
+        beacon?: string | Record<string, any>;
+        /** Force transition to the next view without checking for validation */
+        skipValidation?: boolean;
+    };
+}"
+`;
+
+exports[`Type Exports > Dynamic results Conversion 1`] = `
+"export type size = ExpressionHandler<[
+    val: unknown
+], number>;"
+`;
+
+exports[`Type Exports > Static Type Conversion Arrays 1`] = `
+"export type test = [
+    'foo',
+    1,
+    boolean
+];"
+`;
+
+exports[`Type Exports > Static Type Conversion Objects 1`] = `
+"export interface test {
+    foo: 'foo';
+    bar: 1;
+    bax: boolean;
+}"
+`;
+
+exports[`Type Exports > Template Type Conversion 1`] = `"export type BindingRef = \`{{\${string}}}\`;"`;

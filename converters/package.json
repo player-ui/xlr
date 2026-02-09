@@ -1,0 +1,12 @@
+{
+  "name": "@xlr-lib/xlr-converters",
+  "version": "0.0.0-PLACEHOLDER",
+  "main": "src/index.ts",
+  "dependencies": {
+    "@xlr-lib/xlr": "workspace:*",
+    "@xlr-lib/xlr-utils": "workspace:*"
+  },
+  "devDependencies": {
+    "@xlr-lib/test-utils": "workspace:*"
+  }
+}
