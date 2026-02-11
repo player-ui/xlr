@@ -1,3 +1,7 @@
 # XLR
 
 A space for XLR type definitions and converters for every supported language. 
+
+## About
+
+Based off of grantila's [core-types](https://github.com/grantila/core-types) library with some modifications to support a few more types present in Player as well as generics, these packages allow for the generation of language agnostic representations of the various capabilities that can get plugged into Player. This enables those capabilities to be read/parsed/used outside of Player for functionality like validation, content authoring and cross platform code generation. The packages in this folder contain the definitions of these types, converters for generating them, and utilities for interacting with them. 

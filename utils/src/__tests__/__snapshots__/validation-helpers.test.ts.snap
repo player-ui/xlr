@@ -1,0 +1,53 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`computeEffectiveObject tests > Merges equal additionalProperties 1`] = `
+{
+  "additionalProperties": {
+    "type": "unknown",
+  },
+  "description": "Effective type combining object literal and object literal",
+  "genericTokens": [],
+  "name": "object literal & object literal",
+  "properties": {
+    "bar": {
+      "node": {
+        "type": "number",
+      },
+      "required": true,
+    },
+    "foo": {
+      "node": {
+        "type": "string",
+      },
+      "required": true,
+    },
+  },
+  "type": "object",
+}
+`;
+
+exports[`computeEffectiveObject tests > mixed test 1`] = `
+{
+  "additionalProperties": {
+    "type": "unknown",
+  },
+  "description": "Effective type combining object literal and object literal",
+  "genericTokens": [],
+  "name": "object literal & object literal",
+  "properties": {
+    "bar": {
+      "node": {
+        "type": "number",
+      },
+      "required": true,
+    },
+    "foo": {
+      "node": {
+        "type": "string",
+      },
+      "required": true,
+    },
+  },
+  "type": "object",
+}
+`;

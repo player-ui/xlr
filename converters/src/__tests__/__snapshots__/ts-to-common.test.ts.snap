@@ -1,0 +1,1657 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Complex Types > Exclude with objects 1`] = `
+[
+  {
+    "genericTokens": undefined,
+    "name": "foo",
+    "or": [
+      {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "node": {
+              "const": "b",
+              "title": "foo.type",
+              "type": "string",
+            },
+            "required": true,
+          },
+          "value": {
+            "node": {
+              "title": "foo.value",
+              "type": "number",
+            },
+            "required": true,
+          },
+        },
+        "title": "foo",
+        "type": "object",
+      },
+      {
+        "additionalProperties": false,
+        "properties": {
+          "type": {
+            "node": {
+              "const": "c",
+              "title": "foo.type",
+              "type": "string",
+            },
+            "required": true,
+          },
+          "value": {
+            "node": {
+              "title": "foo.value",
+              "type": "boolean",
+            },
+            "required": true,
+          },
+        },
+        "title": "foo",
+        "type": "object",
+      },
+    ],
+    "source": "filename.ts",
+    "title": "bar",
+    "type": "or",
+  },
+]
+`;
+
+exports[`Complex Types > Exclude with objects collapses single remaining element 1`] = `
+[
+  {
+    "additionalProperties": false,
+    "genericTokens": undefined,
+    "name": "bar",
+    "properties": {
+      "type": {
+        "node": {
+          "const": "b",
+          "title": "foo.type",
+          "type": "string",
+        },
+        "required": true,
+      },
+      "value": {
+        "node": {
+          "title": "foo.value",
+          "type": "number",
+        },
+        "required": true,
+      },
+    },
+    "source": "filename.ts",
+    "title": "bar",
+    "type": "object",
+  },
+]
+`;
+
+exports[`Complex Types > Exclude with primitives 1`] = `
+[
+  {
+    "genericTokens": undefined,
+    "name": "fooType",
+    "or": [
+      {
+        "const": "b",
+        "type": "string",
+      },
+      {
+        "const": "c",
+        "type": "string",
+      },
+    ],
+    "source": "filename.ts",
+    "title": "bar",
+    "type": "or",
+  },
+]
+`;
+
+exports[`Complex Types > Omit 1`] = `
+[
+  {
+    "additionalProperties": false,
+    "genericTokens": undefined,
+    "name": "foo",
+    "properties": {
+      "bax": {
+        "node": {
+          "title": "foo.bax",
+          "type": "number",
+        },
+        "required": true,
+      },
+    },
+    "source": "filename.ts",
+    "title": "Bar",
+    "type": "object",
+  },
+]
+`;
+
+exports[`Complex Types > Omit with type intersection 1`] = `
+[
+  {
+    "and": [
+      {
+        "additionalProperties": false,
+        "genericTokens": undefined,
+        "name": "foo",
+        "properties": {
+          "fax": {
+            "node": {
+              "title": "foo.fax",
+              "type": "number",
+            },
+            "required": true,
+          },
+        },
+        "source": "filename.ts",
+        "title": "foo",
+        "type": "object",
+      },
+      {
+        "additionalProperties": false,
+        "genericTokens": undefined,
+        "name": "boo",
+        "properties": {
+          "bax": {
+            "node": {
+              "title": "boo.bax",
+              "type": "boolean",
+            },
+            "required": true,
+          },
+        },
+        "source": "filename.ts",
+        "title": "boo",
+        "type": "object",
+      },
+    ],
+    "genericTokens": undefined,
+    "name": "test",
+    "source": "filename.ts",
+    "title": "Bar",
+    "type": "and",
+  },
+]
+`;
+
+exports[`Complex Types > Omit with type union 1`] = `
+[
+  {
+    "genericTokens": undefined,
+    "name": "test",
+    "or": [
+      {
+        "additionalProperties": false,
+        "genericTokens": undefined,
+        "name": "foo",
+        "properties": {
+          "far": {
+            "node": {
+              "title": "foo.far",
+              "type": "string",
+            },
+            "required": true,
+          },
+          "fax": {
+            "node": {
+              "title": "foo.fax",
+              "type": "number",
+            },
+            "required": true,
+          },
+        },
+        "source": "filename.ts",
+        "title": "foo",
+        "type": "object",
+      },
+      {
+        "additionalProperties": false,
+        "genericTokens": undefined,
+        "name": "boo",
+        "properties": {
+          "far": {
+            "node": {
+              "title": "boo.far",
+              "type": "string",
+            },
+            "required": true,
+          },
+        },
+        "source": "filename.ts",
+        "title": "boo",
+        "type": "object",
+      },
+    ],
+    "source": "filename.ts",
+    "title": "Bar",
+    "type": "or",
+  },
+]
+`;
+
+exports[`Complex Types > Pick 1`] = `
+[
+  {
+    "additionalProperties": false,
+    "genericTokens": undefined,
+    "name": "foo",
+    "properties": {
+      "bar": {
+        "node": {
+          "title": "foo.bar",
+          "type": "string",
+        },
+        "required": true,
+      },
+    },
+    "source": "filename.ts",
+    "title": "Bar",
+    "type": "object",
+  },
+]
+`;
+
+exports[`Complex Types > Pick with interface intersection 1`] = `
+[
+  {
+    "genericTokens": undefined,
+    "name": "test",
+    "or": [
+      {
+        "additionalProperties": false,
+        "genericTokens": undefined,
+        "name": "foo",
+        "properties": {
+          "far": {
+            "node": {
+              "title": "foo.far",
+              "type": "string",
+            },
+            "required": true,
+          },
+        },
+        "source": "filename.ts",
+        "title": "foo",
+        "type": "object",
+      },
+      {
+        "additionalProperties": false,
+        "genericTokens": undefined,
+        "name": "boo",
+        "properties": {
+          "far": {
+            "node": {
+              "title": "boo.far",
+              "type": "string",
+            },
+            "required": true,
+          },
+        },
+        "source": "filename.ts",
+        "title": "boo",
+        "type": "object",
+      },
+    ],
+    "source": "filename.ts",
+    "title": "Bar",
+    "type": "or",
+  },
+]
+`;
+
+exports[`Complex Types > Pick with interface union 1`] = `
+[
+  {
+    "genericTokens": undefined,
+    "name": "test",
+    "or": [
+      {
+        "additionalProperties": false,
+        "genericTokens": undefined,
+        "name": "foo",
+        "properties": {
+          "far": {
+            "node": {
+              "title": "foo.far",
+              "type": "string",
+            },
+            "required": true,
+          },
+        },
+        "source": "filename.ts",
+        "title": "foo",
+        "type": "object",
+      },
+      {
+        "additionalProperties": false,
+        "genericTokens": undefined,
+        "name": "boo",
+        "properties": {
+          "far": {
+            "node": {
+              "title": "boo.far",
+              "type": "number",
+            },
+            "required": true,
+          },
+        },
+        "source": "filename.ts",
+        "title": "boo",
+        "type": "object",
+      },
+    ],
+    "source": "filename.ts",
+    "title": "Bar",
+    "type": "or",
+  },
+]
+`;
+
+exports[`Edge Cases > Modifying Cache References 1`] = `
+[
+  {
+    "and": [
+      {
+        "and": [
+          {
+            "genericTokens": undefined,
+            "name": "types",
+            "or": [
+              {
+                "additionalProperties": false,
+                "genericTokens": undefined,
+                "name": "foo",
+                "properties": {
+                  "foo": {
+                    "node": {
+                      "title": "foo.foo",
+                      "type": "string",
+                    },
+                    "required": true,
+                  },
+                },
+                "source": "filename.ts",
+                "title": "foo",
+                "type": "object",
+              },
+              {
+                "additionalProperties": false,
+                "genericTokens": undefined,
+                "name": "bar",
+                "properties": {
+                  "bar": {
+                    "node": {
+                      "title": "bar.bar",
+                      "type": "number",
+                    },
+                    "required": true,
+                  },
+                },
+                "source": "filename.ts",
+                "title": "bar",
+                "type": "object",
+              },
+            ],
+            "source": "filename.ts",
+            "title": "types",
+            "type": "or",
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "baz": {
+                "node": {
+                  "title": "baz",
+                  "type": "number",
+                },
+                "required": true,
+              },
+            },
+            "type": "object",
+          },
+        ],
+        "genericTokens": undefined,
+        "name": "requiredTypes",
+        "source": "filename.ts",
+        "title": "requiredTypes",
+        "type": "and",
+      },
+      {
+        "additionalProperties": false,
+        "properties": {
+          "baz": {
+            "node": {
+              "title": "baz",
+              "type": "number",
+            },
+            "required": false,
+          },
+        },
+        "type": "object",
+      },
+    ],
+    "genericTokens": undefined,
+    "name": "test",
+    "source": "filename.ts",
+    "title": "test",
+    "type": "and",
+  },
+]
+`;
+
+exports[`Generic Declarations > Basic Generic Type 1`] = `
+[
+  {
+    "genericTokens": [
+      {
+        "constraints": {
+          "type": "any",
+        },
+        "default": {
+          "type": "any",
+        },
+        "symbol": "T",
+      },
+    ],
+    "name": "Foo",
+    "or": [
+      {
+        "title": "Foo",
+        "type": "string",
+      },
+      {
+        "ref": "T",
+        "title": "Foo",
+        "type": "ref",
+      },
+    ],
+    "source": "filename.ts",
+    "title": "Foo",
+    "type": "or",
+  },
+]
+`;
+
+exports[`Generic Declarations > Generic with Constraints 1`] = `
+[
+  {
+    "genericTokens": [
+      {
+        "constraints": {
+          "type": "string",
+        },
+        "default": {
+          "type": "string",
+        },
+        "symbol": "T",
+      },
+    ],
+    "name": "Foo",
+    "or": [
+      {
+        "title": "Foo",
+        "type": "number",
+      },
+      {
+        "ref": "T",
+        "title": "Foo",
+        "type": "ref",
+      },
+    ],
+    "source": "filename.ts",
+    "title": "Foo",
+    "type": "or",
+  },
+]
+`;
+
+exports[`Generic Declarations > Implementing Generic Type 1`] = `
+[
+  {
+    "genericTokens": undefined,
+    "name": "Bar",
+    "or": [
+      {
+        "title": "Bar",
+        "type": "boolean",
+      },
+      {
+        "genericTokens": [
+          {
+            "constraints": {
+              "type": "any",
+            },
+            "default": {
+              "type": "any",
+            },
+            "symbol": "T",
+          },
+        ],
+        "name": "Foo",
+        "or": [
+          {
+            "title": "Foo",
+            "type": "string",
+          },
+          {
+            "title": "Foo",
+            "type": "number",
+          },
+        ],
+        "source": "filename.ts",
+        "title": "Foo",
+        "type": "or",
+      },
+    ],
+    "source": "filename.ts",
+    "title": "Bar",
+    "type": "or",
+  },
+]
+`;
+
+exports[`Generic Declarations > Implementing Interface with Generics 1`] = `[]`;
+
+exports[`Generic Declarations > Implementing an generic wrapped interface 1`] = `
+[
+  {
+    "additionalProperties": false,
+    "genericTokens": undefined,
+    "name": "Test",
+    "properties": {
+      "bar": {
+        "node": {
+          "title": "base.bar",
+          "type": "string",
+        },
+        "required": true,
+      },
+      "test": {
+        "node": {
+          "title": "Test.test",
+          "type": "any",
+        },
+        "required": true,
+      },
+    },
+    "source": "filename.ts",
+    "title": "Test",
+    "type": "object",
+  },
+]
+`;
+
+exports[`Generic Declarations > Interface with Generics 1`] = `
+[
+  {
+    "additionalProperties": false,
+    "genericTokens": [
+      {
+        "constraints": {
+          "type": "any",
+        },
+        "default": {
+          "type": "any",
+        },
+        "symbol": "T",
+      },
+    ],
+    "name": "Foo",
+    "properties": {
+      "bar": {
+        "node": {
+          "ref": "T",
+          "title": "Foo.bar",
+          "type": "ref",
+        },
+        "required": true,
+      },
+    },
+    "source": "filename.ts",
+    "title": "Foo",
+    "type": "object",
+  },
+]
+`;
+
+exports[`Generic Declarations > Interface with Generics and Constraints 1`] = `
+[
+  {
+    "additionalProperties": false,
+    "genericTokens": [
+      {
+        "constraints": {
+          "type": "string",
+        },
+        "default": {
+          "type": "string",
+        },
+        "symbol": "T",
+      },
+    ],
+    "name": "Foo",
+    "properties": {
+      "bar": {
+        "node": {
+          "ref": "T",
+          "title": "Foo.bar",
+          "type": "ref",
+        },
+        "required": true,
+      },
+    },
+    "source": "filename.ts",
+    "title": "Foo",
+    "type": "object",
+  },
+]
+`;
+
+exports[`Index Types > Basic 1`] = `
+[
+  {
+    "additionalProperties": false,
+    "genericTokens": undefined,
+    "name": "test",
+    "properties": {
+      "key": {
+        "node": {
+          "title": "test.key",
+          "type": "string",
+        },
+        "required": true,
+      },
+      "key2": {
+        "node": {
+          "title": "test.key2",
+          "type": "number",
+        },
+        "required": true,
+      },
+    },
+    "source": "filename.ts",
+    "title": "test",
+    "type": "object",
+  },
+]
+`;
+
+exports[`Index Types > Complex Types 1`] = `
+[
+  {
+    "additionalProperties": false,
+    "genericTokens": undefined,
+    "name": "test",
+    "properties": {
+      "key": {
+        "node": {
+          "additionalProperties": false,
+          "genericTokens": undefined,
+          "name": "something",
+          "properties": {
+            "prop1": {
+              "node": {
+                "title": "something.prop1",
+                "type": "string",
+              },
+              "required": true,
+            },
+            "prop2": {
+              "node": {
+                "title": "something.prop2",
+                "type": "number",
+              },
+              "required": true,
+            },
+          },
+          "source": "filename.ts",
+          "title": "test.key",
+          "type": "object",
+        },
+        "required": true,
+      },
+    },
+    "source": "filename.ts",
+    "title": "test",
+    "type": "object",
+  },
+]
+`;
+
+exports[`Interface Exports > Basic Interface Type 1`] = `
+[
+  {
+    "additionalProperties": false,
+    "genericTokens": undefined,
+    "name": "Foo",
+    "properties": {
+      "bar": {
+        "node": {
+          "title": "Foo.bar",
+          "type": "string",
+        },
+        "required": true,
+      },
+      "bax": {
+        "node": {
+          "title": "Foo.bax",
+          "type": "number",
+        },
+        "required": true,
+      },
+    },
+    "source": "filename.ts",
+    "title": "Foo",
+    "type": "object",
+  },
+]
+`;
+
+exports[`Interface Exports > Implementing more than one Interfaces 1`] = `
+[
+  {
+    "additionalProperties": false,
+    "genericTokens": undefined,
+    "name": "Test",
+    "properties": {
+      "bar": {
+        "node": {
+          "title": "Bar.bar",
+          "type": "string",
+        },
+        "required": true,
+      },
+      "foo": {
+        "node": {
+          "title": "Foo.foo",
+          "type": "number",
+        },
+        "required": true,
+      },
+      "test": {
+        "node": {
+          "title": "Test.test",
+          "type": "any",
+        },
+        "required": true,
+      },
+    },
+    "source": "filename.ts",
+    "title": "Test",
+    "type": "object",
+  },
+]
+`;
+
+exports[`Interface Exports > Interface with Inheritance 1`] = `
+[
+  {
+    "additionalProperties": false,
+    "genericTokens": undefined,
+    "name": "Foo",
+    "properties": {
+      "bar": {
+        "node": {
+          "title": "Foo.bar",
+          "type": "string",
+        },
+        "required": true,
+      },
+      "baw": {
+        "node": {
+          "title": "Base.baw",
+          "type": "any",
+        },
+        "required": true,
+      },
+      "bax": {
+        "node": {
+          "title": "Foo.bax",
+          "type": "number",
+        },
+        "required": false,
+      },
+    },
+    "source": "filename.ts",
+    "title": "Foo",
+    "type": "object",
+  },
+]
+`;
+
+exports[`Interface Exports > Interface with Optional parameters 1`] = `
+[
+  {
+    "additionalProperties": false,
+    "genericTokens": undefined,
+    "name": "Foo",
+    "properties": {
+      "bar": {
+        "node": {
+          "title": "Foo.bar",
+          "type": "string",
+        },
+        "required": true,
+      },
+      "bax": {
+        "node": {
+          "title": "Foo.bax",
+          "type": "number",
+        },
+        "required": false,
+      },
+    },
+    "source": "filename.ts",
+    "title": "Foo",
+    "type": "object",
+  },
+]
+`;
+
+exports[`String Templates > Basic 1`] = `
+[
+  {
+    "format": "String is a .*, number is a [0-9]* and boolean is a true|false",
+    "genericTokens": undefined,
+    "name": "Bar",
+    "source": "filename.ts",
+    "title": "Bar",
+    "type": "template",
+  },
+]
+`;
+
+exports[`String Templates > Type References 1`] = `
+[
+  {
+    "format": "String is a .*, number is a [0-9]* and boolean is a true|false",
+    "genericTokens": undefined,
+    "name": "Bar",
+    "source": "filename.ts",
+    "title": "Bar",
+    "type": "template",
+  },
+]
+`;
+
+exports[`Type Exports > Basic Array Type 1`] = `
+[
+  {
+    "elementType": {
+      "type": "string",
+    },
+    "genericTokens": undefined,
+    "name": "Foo",
+    "source": "filename.ts",
+    "title": "Foo",
+    "type": "array",
+  },
+]
+`;
+
+exports[`Type Exports > Basic Union Type 1`] = `
+[
+  {
+    "genericTokens": undefined,
+    "name": "Foo",
+    "or": [
+      {
+        "title": "Foo",
+        "type": "number",
+      },
+      {
+        "title": "Foo",
+        "type": "string",
+      },
+    ],
+    "source": "filename.ts",
+    "title": "Foo",
+    "type": "or",
+  },
+]
+`;
+
+exports[`Type with typeof > Indexing (long) 1`] = `
+[
+  {
+    "genericTokens": undefined,
+    "name": "options",
+    "or": [
+      {
+        "const": 1,
+        "type": "number",
+      },
+      {
+        "const": 2,
+        "type": "number",
+      },
+      {
+        "const": 3,
+        "type": "number",
+      },
+      {
+        "const": 4,
+        "type": "number",
+      },
+      {
+        "const": 5,
+        "type": "number",
+      },
+      {
+        "const": 6,
+        "type": "number",
+      },
+      {
+        "const": 7,
+        "type": "number",
+      },
+      {
+        "const": 8,
+        "type": "number",
+      },
+      {
+        "const": 9,
+        "type": "number",
+      },
+      {
+        "const": 10,
+        "type": "number",
+      },
+      {
+        "const": 11,
+        "type": "number",
+      },
+      {
+        "const": 12,
+        "type": "number",
+      },
+      {
+        "const": 13,
+        "type": "number",
+      },
+      {
+        "const": 14,
+        "type": "number",
+      },
+      {
+        "const": 15,
+        "type": "number",
+      },
+      {
+        "const": 16,
+        "type": "number",
+      },
+      {
+        "const": 17,
+        "type": "number",
+      },
+      {
+        "const": 18,
+        "type": "number",
+      },
+      {
+        "const": 19,
+        "type": "number",
+      },
+      {
+        "const": 20,
+        "type": "number",
+      },
+      {
+        "const": 21,
+        "type": "number",
+      },
+      {
+        "const": 22,
+        "type": "number",
+      },
+      {
+        "const": 23,
+        "type": "number",
+      },
+      {
+        "const": 24,
+        "type": "number",
+      },
+      {
+        "const": 25,
+        "type": "number",
+      },
+      {
+        "const": 26,
+        "type": "number",
+      },
+      {
+        "const": 27,
+        "type": "number",
+      },
+      {
+        "const": 28,
+        "type": "number",
+      },
+      {
+        "const": 29,
+        "type": "number",
+      },
+      {
+        "const": 30,
+        "type": "number",
+      },
+      {
+        "const": 31,
+        "type": "number",
+      },
+      {
+        "const": 32,
+        "type": "number",
+      },
+      {
+        "const": 33,
+        "type": "number",
+      },
+      {
+        "const": 34,
+        "type": "number",
+      },
+      {
+        "const": 35,
+        "type": "number",
+      },
+      {
+        "const": 36,
+        "type": "number",
+      },
+      {
+        "const": 37,
+        "type": "number",
+      },
+      {
+        "const": 38,
+        "type": "number",
+      },
+      {
+        "const": 39,
+        "type": "number",
+      },
+      {
+        "const": 40,
+        "type": "number",
+      },
+      {
+        "const": 41,
+        "type": "number",
+      },
+      {
+        "const": 42,
+        "type": "number",
+      },
+      {
+        "const": 43,
+        "type": "number",
+      },
+      {
+        "const": 44,
+        "type": "number",
+      },
+      {
+        "const": 45,
+        "type": "number",
+      },
+      {
+        "const": 46,
+        "type": "number",
+      },
+      {
+        "const": 47,
+        "type": "number",
+      },
+      {
+        "const": 48,
+        "type": "number",
+      },
+      {
+        "const": 49,
+        "type": "number",
+      },
+      {
+        "const": 50,
+        "type": "number",
+      },
+      {
+        "const": 51,
+        "type": "number",
+      },
+      {
+        "const": 52,
+        "type": "number",
+      },
+      {
+        "const": 53,
+        "type": "number",
+      },
+      {
+        "const": 54,
+        "type": "number",
+      },
+      {
+        "const": 55,
+        "type": "number",
+      },
+      {
+        "const": 56,
+        "type": "number",
+      },
+      {
+        "const": 57,
+        "type": "number",
+      },
+      {
+        "const": 58,
+        "type": "number",
+      },
+    ],
+    "source": "filename.ts",
+    "title": "options",
+    "type": "or",
+  },
+]
+`;
+
+exports[`Type with typeof > Indexing 1`] = `
+[
+  {
+    "genericTokens": undefined,
+    "name": "options",
+    "or": [
+      {
+        "const": "one",
+        "type": "string",
+      },
+      {
+        "const": "two",
+        "type": "string",
+      },
+      {
+        "const": "three",
+        "type": "string",
+      },
+    ],
+    "source": "filename.ts",
+    "title": "options",
+    "type": "or",
+  },
+  {
+    "genericTokens": undefined,
+    "name": "options2",
+    "or": [
+      {
+        "const": "one",
+        "type": "string",
+      },
+      {
+        "const": "two",
+        "type": "string",
+      },
+      {
+        "const": "three",
+        "type": "string",
+      },
+    ],
+    "source": "filename.ts",
+    "title": "options2",
+    "type": "or",
+  },
+]
+`;
+
+exports[`Variable Exports > Aliased Arrow function exports its own name 1`] = `
+[
+  {
+    "name": "foo",
+    "parameters": [
+      {
+        "default": undefined,
+        "name": "input",
+        "optional": undefined,
+        "type": {
+          "type": "number",
+        },
+      },
+    ],
+    "returnType": {
+      "additionalProperties": false,
+      "genericTokens": undefined,
+      "name": "Bar",
+      "properties": {
+        "foo": {
+          "node": {
+            "title": "Bar.foo",
+            "type": "string",
+          },
+          "required": true,
+        },
+        "fuz": {
+          "node": {
+            "title": "Bar.fuz",
+            "type": "number",
+          },
+          "required": true,
+        },
+      },
+      "source": "filename.ts",
+      "title": "Bar",
+      "type": "object",
+    },
+    "source": "filename.ts",
+    "type": "function",
+  },
+  {
+    "name": "baz",
+    "parameters": [
+      {
+        "default": undefined,
+        "name": "input",
+        "optional": undefined,
+        "type": {
+          "type": "number",
+        },
+      },
+    ],
+    "returnType": {
+      "additionalProperties": false,
+      "genericTokens": undefined,
+      "name": "Bar",
+      "properties": {
+        "foo": {
+          "node": {
+            "title": "Bar.foo",
+            "type": "string",
+          },
+          "required": true,
+        },
+        "fuz": {
+          "node": {
+            "title": "Bar.fuz",
+            "type": "number",
+          },
+          "required": true,
+        },
+      },
+      "source": "filename.ts",
+      "title": "Bar",
+      "type": "object",
+    },
+    "source": "filename.ts",
+    "type": "function",
+  },
+]
+`;
+
+exports[`Variable Exports > Aliased variable 1`] = `
+[
+  {
+    "additionalProperties": false,
+    "genericTokens": undefined,
+    "name": "Bar",
+    "properties": {
+      "foo": {
+        "node": {
+          "title": "Bar.foo",
+          "type": "string",
+        },
+        "required": true,
+      },
+      "fuz": {
+        "node": {
+          "title": "Bar.fuz",
+          "type": "number",
+        },
+        "required": true,
+      },
+    },
+    "source": "filename.ts",
+    "title": "Bar",
+    "type": "object",
+  },
+]
+`;
+
+exports[`Variable Exports > Array const exports 1`] = `
+[
+  {
+    "const": [
+      {
+        "const": 1,
+        "type": "number",
+      },
+      {
+        "const": 2,
+        "type": "number",
+      },
+      {
+        "const": 3,
+        "type": "number",
+      },
+    ],
+    "elementType": {
+      "type": "any",
+    },
+    "name": "foo",
+    "source": "filename.ts",
+    "type": "array",
+  },
+]
+`;
+
+exports[`Variable Exports > Array const exports with spread 1`] = `
+[
+  {
+    "const": [
+      {
+        "const": 1,
+        "type": "number",
+      },
+      {
+        "const": 2,
+        "type": "number",
+      },
+      {
+        "const": 3,
+        "type": "number",
+      },
+      {
+        "const": 4,
+        "type": "number",
+      },
+    ],
+    "elementType": {
+      "type": "any",
+    },
+    "name": "bar",
+    "source": "filename.ts",
+    "type": "array",
+  },
+]
+`;
+
+exports[`Variable Exports > Arrow function with object return type 1`] = `
+[
+  {
+    "name": "foo",
+    "parameters": [],
+    "returnType": {
+      "additionalProperties": false,
+      "genericTokens": undefined,
+      "name": "Bar",
+      "properties": {
+        "foo": {
+          "node": {
+            "title": "Bar.foo",
+            "type": "string",
+          },
+          "required": true,
+        },
+        "fuz": {
+          "node": {
+            "title": "Bar.fuz",
+            "type": "number",
+          },
+          "required": true,
+        },
+      },
+      "source": "filename.ts",
+      "title": "Bar",
+      "type": "object",
+    },
+    "source": "filename.ts",
+    "type": "function",
+  },
+]
+`;
+
+exports[`Variable Exports > Arrow function with parameters 1`] = `
+[
+  {
+    "name": "foo",
+    "parameters": [
+      {
+        "default": undefined,
+        "name": "input",
+        "optional": undefined,
+        "type": {
+          "type": "number",
+        },
+      },
+    ],
+    "returnType": {
+      "additionalProperties": false,
+      "genericTokens": undefined,
+      "name": "Bar",
+      "properties": {
+        "foo": {
+          "node": {
+            "title": "Bar.foo",
+            "type": "string",
+          },
+          "required": true,
+        },
+        "fuz": {
+          "node": {
+            "title": "Bar.fuz",
+            "type": "number",
+          },
+          "required": true,
+        },
+      },
+      "source": "filename.ts",
+      "title": "Bar",
+      "type": "object",
+    },
+    "source": "filename.ts",
+    "type": "function",
+  },
+]
+`;
+
+exports[`Variable Exports > Function with object return type 1`] = `
+[
+  {
+    "additionalProperties": false,
+    "genericTokens": undefined,
+    "name": "Bar",
+    "properties": {
+      "foo": {
+        "node": {
+          "title": "Bar.foo",
+          "type": "string",
+        },
+        "required": true,
+      },
+      "fuz": {
+        "node": {
+          "title": "Bar.fuz",
+          "type": "number",
+        },
+        "required": true,
+      },
+    },
+    "source": "filename.ts",
+    "title": "Bar",
+    "type": "object",
+  },
+]
+`;
+
+exports[`Variable Exports > Function with primitive return type 1`] = `
+[
+  {
+    "name": "foo",
+    "source": "filename.ts",
+    "type": "string",
+  },
+]
+`;
+
+exports[`Variable Exports > Object const exports 1`] = `
+[
+  {
+    "additionalProperties": false,
+    "name": "foo",
+    "properties": {
+      "bar": {
+        "node": {
+          "const": "test",
+          "type": "string",
+        },
+        "required": true,
+      },
+      "far": {
+        "node": {
+          "const": false,
+          "type": "boolean",
+        },
+        "required": true,
+      },
+      "foo": {
+        "node": {
+          "const": 1,
+          "type": "number",
+        },
+        "required": true,
+      },
+    },
+    "source": "filename.ts",
+    "type": "object",
+  },
+]
+`;
+
+exports[`Variable Exports > Object const exports with spread 1`] = `
+[
+  {
+    "additionalProperties": false,
+    "name": "far",
+    "properties": {
+      "bar": {
+        "node": {
+          "const": "test",
+          "type": "string",
+        },
+        "required": true,
+      },
+      "far": {
+        "node": {
+          "const": false,
+          "type": "boolean",
+        },
+        "required": true,
+      },
+      "foo": {
+        "node": {
+          "const": 1,
+          "type": "number",
+        },
+        "required": true,
+      },
+      "mar": {
+        "node": {
+          "const": 2,
+          "type": "number",
+        },
+        "required": true,
+      },
+    },
+    "source": "filename.ts",
+    "type": "object",
+  },
+]
+`;
+
+exports[`Variable Exports > Primitive const exports 1`] = `
+[
+  {
+    "const": 1,
+    "name": "foo",
+    "source": "filename.ts",
+    "type": "number",
+  },
+  {
+    "const": "test",
+    "name": "bar",
+    "source": "filename.ts",
+    "type": "string",
+  },
+  {
+    "const": true,
+    "name": "far",
+    "source": "filename.ts",
+    "type": "boolean",
+  },
+]
+`;
+
+exports[`Variable Exports > gets named tuple members 1`] = `
+[
+  {
+    "additionalItems": false,
+    "elementTypes": [
+      {
+        "name": "argName",
+        "optional": undefined,
+        "type": {
+          "type": "string",
+        },
+      },
+      {
+        "name": "argValue",
+        "optional": undefined,
+        "type": {
+          "type": "string",
+        },
+      },
+    ],
+    "genericTokens": undefined,
+    "minItems": 2,
+    "name": "Foo",
+    "source": "filename.ts",
+    "title": "Foo",
+    "type": "tuple",
+  },
+]
+`;
+
+exports[`Variable Exports > named tuples in generics 1`] = `
+[
+  {
+    "additionalItems": false,
+    "elementTypes": [
+      {
+        "name": "argName",
+        "optional": undefined,
+        "type": {
+          "type": "string",
+        },
+      },
+      {
+        "name": "argValue",
+        "optional": undefined,
+        "type": {
+          "type": "string",
+        },
+      },
+    ],
+    "genericTokens": undefined,
+    "minItems": 2,
+    "name": "Foo",
+    "source": "filename.ts",
+    "title": "Bar",
+    "type": "tuple",
+  },
+]
+`;
