@@ -1,0 +1,8 @@
+#!/usr/bin/env node
+const converter = require("./dist/helpers/converter.js")
+const input = process.argv[2]
+const output = process.argv[3]
+const primitives = process.argv[4].split(',')
+console.log(primitives)
+console.log(typeof primitives)
+converter.converter(input, output, primitives)

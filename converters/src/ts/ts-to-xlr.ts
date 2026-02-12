@@ -38,7 +38,7 @@ import {
   applyExcludeToNodeType,
   isPrimitiveTypeNode,
 } from "@xlr-lib/xlr-utils";
-import { ConversionError } from "./types";
+import { ConversionError } from "../types";
 
 export type MappedType = "Pick" | "Omit" | "Required" | "Partial" | "Exclude";
 
