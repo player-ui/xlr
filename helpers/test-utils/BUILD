@@ -10,7 +10,7 @@ vitest_config(name = "vitest_config")
 
 js_pipeline(
     private = True,
-    package_name = "@player-tools/test-utils",
+    package_name = "@xlr-lib/test-utils",
     peer_deps = [
         "//:node_modules/typescript",
     ],

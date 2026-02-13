@@ -10,7 +10,7 @@ export default defineConfig({
       "helpers",
       "bazel-bin",
       "bazel-out",
-      "bazel-tools",
+      "bazel-xlr",
       "bazel-testlogs",
     ],
     reporters: [
@@ -22,7 +22,7 @@ export default defineConfig({
     setupFiles: [
       path.join(
         process.env.XML_OUTPUT_FILE ? "" : __dirname,
-        "./scripts/vitest.setup.ts"
+        "./scripts/vitest.setup.ts",
       ),
     ],
 

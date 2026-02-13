@@ -6,7 +6,7 @@ tsup_config(name = "tsup_config")
 npm_package(
     tags = ["do-not-publish"],
     name = "static-xlrs",
-    package = "@player-tools/static-xlrs",
+    package = "@xlr-lib/static-xlrs",
     srcs = glob(["src/**/*"]) + ["package.json"],
     visibility = ["//visibility:public"],
 )
