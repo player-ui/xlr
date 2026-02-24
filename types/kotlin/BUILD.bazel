@@ -1,0 +1,66 @@
+load("@rules_kotlin//kotlin:core.bzl", "kt_compiler_plugin")
+load("@rules_kotlin//kotlin:jvm.bzl", "kt_jvm_library", "kt_jvm_test")
+load("@rules_kotlin//kotlin:lint.bzl", "ktlint_config", "ktlint_fix", "ktlint_test")
+
+package(default_visibility = ["//visibility:public"])
+
+ktlint_config(
+    name = "ktlint_config",
+    editorconfig = ".editorconfig",
+)
+
+kt_compiler_plugin(
+    name = "kotlinx_serialization_plugin",
+    compile_phase = True,
+    id = "org.jetbrains.kotlin.serialization",
+    stubs_phase = True,
+    deps = [
+        "@rules_kotlin//kotlin/compiler:kotlin-serialization-compiler-plugin",
+    ],
+)
+
+kt_jvm_library(
+    name = "xlr-types",
+    srcs = glob(["src/main/kotlin/**/*.kt"]),
+    kotlinc_opts = "//:kt_opts",
+    plugins = [":kotlinx_serialization_plugin"],
+    deps = [
+        "@maven//:org_jetbrains_kotlin_kotlin_stdlib",
+        "@maven//:org_jetbrains_kotlinx_kotlinx_serialization_json",
+    ],
+)
+
+kt_jvm_test(
+    name = "xlr-types-test",
+    srcs = glob(["src/test/kotlin/**/*.kt"]),
+    kotlinc_opts = "//:kt_opts",
+    plugins = [":kotlinx_serialization_plugin"],
+    resource_strip_prefix = "types/kotlin/src/test/resources",
+    resources = glob(["src/test/resources/**"]),
+    test_class = "com.intuit.playerui.xlr.AllTests",
+    deps = [
+        ":xlr-types",
+        "@maven//:junit_junit",
+        "@maven//:org_jetbrains_kotlin_kotlin_test",
+        "@maven//:org_jetbrains_kotlin_kotlin_test_junit",
+        "@maven//:org_jetbrains_kotlinx_kotlinx_serialization_json",
+    ],
+)
+
+ktlint_test(
+    name = "ktlint",
+    srcs = glob([
+        "src/main/kotlin/**/*.kt",
+        "src/test/kotlin/**/*.kt",
+    ]),
+    config = ":ktlint_config",
+)
+
+ktlint_fix(
+    name = "ktlint_fix",
+    srcs = glob([
+        "src/main/kotlin/**/*.kt",
+        "src/test/kotlin/**/*.kt",
+    ]),
+    config = ":ktlint_config",
+)

@@ -101,7 +101,7 @@ jobs:
           at: ~/xlr
 
       - run: |
-          bazel coverage --config=ci -- $(bazel query "kind(js_test, //...) + kind(py_test, //...)" --output label 2>/dev/null | tr '\n' ' ')
+          bazel coverage --config=ci -- $(bazel query "kind(js_test, //...) + kind(py_test, //...) + kind(kt_jvm_test, //...) + kind(_ktlint_test, //...)" --output label 2>/dev/null | tr '\n' ' ')
 
       - run:
           when: always

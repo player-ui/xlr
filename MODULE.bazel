@@ -66,6 +66,26 @@ pip.parse(
 
 use_repo(pip, "pypi")
 
+####### Kotlin #########
+bazel_dep(name = "rules_kotlin", version = "2.2.1")
+bazel_dep(name = "rules_jvm_external", version = "6.7")
+
+maven = use_extension("@rules_jvm_external//:extensions.bzl", "maven")
+maven.install(
+    artifacts = [
+        "org.jetbrains.kotlin:kotlin-stdlib:2.3.0",
+        "org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0",
+        "org.jetbrains.kotlin:kotlin-test:2.3.0",
+        "org.jetbrains.kotlin:kotlin-test-junit:2.3.0",
+        "junit:junit:4.13.2",
+    ],
+    repositories = [
+        "https://repo1.maven.org/maven2",
+    ],
+)
+use_repo(maven, "maven")
+########################
+
 build_constants = use_repo_rule("@rules_player//distribution:defs.bzl", "build_constants")
 build_constants(
     name = "build_constants",
