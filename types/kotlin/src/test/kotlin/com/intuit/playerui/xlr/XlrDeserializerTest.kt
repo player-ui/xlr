@@ -9,12 +9,7 @@ import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class XlrDeserializerTest {
-    private val fixtureJson: String by lazy {
-        this::class.java
-            .getResourceAsStream("/test.json")!!
-            .bufferedReader()
-            .readText()
-    }
+    private val fixtureJson: String get() = TestFixtures.choiceAssetJson
 
     @Test
     fun `deserializes document name and source`() {

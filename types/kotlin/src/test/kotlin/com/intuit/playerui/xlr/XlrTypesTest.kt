@@ -1,7 +1,6 @@
 package com.intuit.playerui.xlr
 
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
@@ -192,21 +191,14 @@ class XlrTypesTest {
     }
 
     @Test
-    fun `xlrSerializersModule is a valid SerializersModule`() {
-        assertIs<SerializersModule>(xlrSerializersModule)
-    }
-
-    @Test
-    fun `polymorphic serialization round-trip via Json`() {
+    fun `polymorphic serialization round-trip via NodeType serializer`() {
         val jsonInstance =
             Json {
-                serializersModule = xlrSerializersModule
                 ignoreUnknownKeys = true
-                classDiscriminator = "_type"
             }
-        val original = StringType(const = "test", title = "MyTitle")
-        val serialized = jsonInstance.encodeToString(kotlinx.serialization.serializer<StringType>(), original)
-        val deserialized = jsonInstance.decodeFromString(kotlinx.serialization.serializer<StringType>(), serialized)
+        val original: NodeType = StringType(const = "test", title = "MyTitle")
+        val serialized = jsonInstance.encodeToString(NodeType.serializer(), original)
+        val deserialized = jsonInstance.decodeFromString(NodeType.serializer(), serialized)
         assertEquals(original, deserialized)
     }
 

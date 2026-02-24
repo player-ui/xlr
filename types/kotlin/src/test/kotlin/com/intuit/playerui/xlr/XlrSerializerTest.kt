@@ -1,5 +1,6 @@
 package com.intuit.playerui.xlr
 
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -11,12 +12,7 @@ import kotlin.test.assertNotNull
 import kotlin.test.assertTrue
 
 class XlrSerializerTest {
-    private val fixtureJson: String by lazy {
-        this::class.java
-            .getResourceAsStream("/test.json")!!
-            .bufferedReader()
-            .readText()
-    }
+    private val fixtureJson: String get() = TestFixtures.choiceAssetJson
 
     @Test
     fun `round-trip deserialize-serialize-deserialize produces equal documents`() {
@@ -454,5 +450,24 @@ class XlrSerializerTest {
         val json = XlrSerializer.serializeNode(original)
         val deserialized = XlrDeserializer.parseNode(json)
         assertEquals(original, deserialized)
+    }
+
+    @Test
+    fun `AdditionalItemsType None serializes to false`() {
+        val obj = ObjectType(additionalProperties = AdditionalItemsType.None)
+        val json = XlrSerializer.serializeNode(obj)
+        assertEquals(JsonPrimitive(false), json["additionalProperties"])
+    }
+
+    @Test
+    fun `TupleType additionalItems None serializes to false`() {
+        val tuple =
+            TupleType(
+                elementTypes = listOf(TupleMember(type = StringType())),
+                minItems = 1,
+                additionalItems = AdditionalItemsType.None,
+            )
+        val json = XlrSerializer.serializeNode(tuple)
+        assertEquals(JsonPrimitive(false), json["additionalItems"])
     }
 }
