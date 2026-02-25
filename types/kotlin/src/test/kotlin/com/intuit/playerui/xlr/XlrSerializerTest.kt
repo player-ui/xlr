@@ -1,5 +1,7 @@
 package com.intuit.playerui.xlr
 
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
@@ -13,18 +15,17 @@ import kotlin.test.assertTrue
 
 class XlrSerializerTest {
     private val fixtureJson: String get() = TestFixtures.choiceAssetJson
+    private val doc by lazy { XlrDeserializer.deserialize(fixtureJson) }
 
     @Test
     fun `round-trip deserialize-serialize-deserialize produces equal documents`() {
-        val doc1 = XlrDeserializer.deserialize(fixtureJson)
-        val serialized = XlrSerializer.serialize(doc1)
+        val serialized = XlrSerializer.serialize(doc)
         val doc2 = XlrDeserializer.deserialize(serialized)
-        assertEquals(doc1, doc2)
+        assertEquals(doc, doc2)
     }
 
     @Test
     fun `serializes document name and source`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         val jsonObj = XlrSerializer.serializeDocument(doc)
         assertEquals("ChoiceAsset", jsonObj["name"]?.jsonPrimitive?.content)
         assertTrue(
@@ -37,7 +38,6 @@ class XlrSerializerTest {
 
     @Test
     fun `serializes document genericTokens`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         val jsonObj = XlrSerializer.serializeDocument(doc)
         val tokens = jsonObj["genericTokens"]
         assertNotNull(tokens)
@@ -469,5 +469,146 @@ class XlrSerializerTest {
             )
         val json = XlrSerializer.serializeNode(tuple)
         assertEquals(JsonPrimitive(false), json["additionalItems"])
+    }
+
+    @Test
+    fun `serialize returns parseable JSON string`() {
+        val doc = XlrDocument(name = "Test", source = "test.ts", objectType = ObjectType())
+        val jsonString = XlrSerializer.serialize(doc)
+        val parsed =
+            Json.parseToJsonElement(jsonString)
+        assertIs<JsonObject>(parsed)
+    }
+
+    @Test
+    fun `serialize round-trip via string form`() {
+        val doc =
+            XlrDocument(
+                name = "Test",
+                source = "test.ts",
+                objectType =
+                    ObjectType(
+                        properties = mapOf("x" to ObjectProperty(required = true, node = StringType())),
+                    ),
+            )
+        val jsonString = XlrSerializer.serialize(doc)
+        val doc2 = XlrDeserializer.deserialize(jsonString)
+        assertEquals(doc.name, doc2.name)
+        assertEquals(doc.source, doc2.source)
+        assertEquals(doc.objectType.properties, doc2.objectType.properties)
+    }
+
+    @Test
+    fun `serializeDocument omits genericTokens when null`() {
+        val doc = XlrDocument(name = "Test", source = "test.ts", objectType = ObjectType())
+        val jsonObj = XlrSerializer.serializeDocument(doc)
+        assertFalse(jsonObj.containsKey("genericTokens"))
+    }
+
+    @Test
+    fun `serializeDocument includes genericTokens when present`() {
+        val doc =
+            XlrDocument(
+                name = "Test",
+                source = "test.ts",
+                objectType = ObjectType(),
+                genericTokens = listOf(ParamTypeNode(symbol = "T")),
+            )
+        val jsonObj = XlrSerializer.serializeDocument(doc)
+        assertTrue(jsonObj.containsKey("genericTokens"))
+    }
+
+    @Test
+    fun `serializeNode preserves JsonElement annotation fields`() {
+        val examples =
+            Json.parseToJsonElement("""["a", "b"]""")
+        val defaultVal =
+            Json.parseToJsonElement(""""hello"""")
+        val see =
+            Json.parseToJsonElement("""{"ref": "OtherType"}""")
+        val node = StringType(examples = examples, default = defaultVal, see = see)
+        val jsonObj = XlrSerializer.serializeNode(node)
+        assertEquals(examples, jsonObj["examples"])
+        assertEquals(defaultVal, jsonObj["default"])
+        assertEquals(see, jsonObj["see"])
+    }
+
+    @Test
+    fun `round-trip all 19 node types`() {
+        for (original in TestFixtures.allNodeTypeInstances) {
+            val json = XlrSerializer.serializeNode(original)
+            val deserialized = XlrDeserializer.parseNode(json)
+            assertEquals(original, deserialized, "Round-trip failed for ${original::class.simpleName}")
+        }
+    }
+
+    @Test
+    fun `serializeDocument flattens ObjectType at root`() {
+        val doc =
+            XlrDocument(
+                name = "Test",
+                source = "test.ts",
+                objectType =
+                    ObjectType(
+                        properties = mapOf("x" to ObjectProperty(required = true, node = StringType())),
+                    ),
+            )
+        val jsonObj = XlrSerializer.serializeDocument(doc)
+        assertEquals("object", jsonObj["type"]?.jsonPrimitive?.content)
+        assertFalse(jsonObj.containsKey("objectType"))
+        assertTrue(jsonObj.containsKey("properties"))
+    }
+
+    @Test
+    fun `serializeDocument name and source override ObjectType values`() {
+        val obj = ObjectType(name = "InnerName", source = "inner.ts")
+        val doc = XlrDocument(name = "OuterName", source = "outer.ts", objectType = obj)
+        val jsonObj = XlrSerializer.serializeDocument(doc)
+        assertEquals("OuterName", jsonObj["name"]?.jsonPrimitive?.content)
+        assertEquals("outer.ts", jsonObj["source"]?.jsonPrimitive?.content)
+    }
+
+    @Test
+    fun `serializeDocument preserves annotations on ObjectType root`() {
+        val doc =
+            XlrDocument(
+                name = "Test",
+                source = "test.ts",
+                objectType =
+                    ObjectType(
+                        title = "TestTitle",
+                        description = "A test object",
+                        comment = "Some comment",
+                    ),
+            )
+        val jsonObj = XlrSerializer.serializeDocument(doc)
+        assertEquals("TestTitle", jsonObj["title"]?.jsonPrimitive?.content)
+        assertEquals("A test object", jsonObj["description"]?.jsonPrimitive?.content)
+        assertEquals("Some comment", jsonObj["comment"]?.jsonPrimitive?.content)
+    }
+
+    @Test
+    fun `serialize round-trip with genericTokens`() {
+        val doc =
+            XlrDocument(
+                name = "Test",
+                source = "test.ts",
+                objectType = ObjectType(),
+                genericTokens =
+                    listOf(
+                        ParamTypeNode(
+                            symbol = "T",
+                            constraints = RefType(ref = "Asset"),
+                            default = RefType(ref = "Asset"),
+                        ),
+                    ),
+            )
+        val jsonString = XlrSerializer.serialize(doc)
+        val doc2 = XlrDeserializer.deserialize(jsonString)
+        assertEquals(doc.name, doc2.name)
+        assertEquals(doc.source, doc2.source)
+        assertNotNull(doc2.genericTokens)
+        assertEquals(1, doc2.genericTokens!!.size)
+        assertEquals("T", doc2.genericTokens!!.first().symbol)
     }
 }

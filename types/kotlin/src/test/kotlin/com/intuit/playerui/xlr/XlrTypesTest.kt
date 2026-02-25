@@ -1,13 +1,22 @@
 package com.intuit.playerui.xlr
 
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonArray
+import kotlinx.serialization.json.JsonNull
+import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonObject
+import kotlinx.serialization.json.jsonPrimitive
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertIs
+import kotlin.test.assertNotEquals
 import kotlin.test.assertNotNull
 import kotlin.test.assertNull
 
 class XlrTypesTest {
+    private val json = Json { ignoreUnknownKeys = true }
+
     @Test
     fun `StringType defaults`() {
         val s = StringType()
@@ -192,43 +201,15 @@ class XlrTypesTest {
 
     @Test
     fun `polymorphic serialization round-trip via NodeType serializer`() {
-        val jsonInstance =
-            Json {
-                ignoreUnknownKeys = true
-            }
         val original: NodeType = StringType(const = "test", title = "MyTitle")
-        val serialized = jsonInstance.encodeToString(NodeType.serializer(), original)
-        val deserialized = jsonInstance.decodeFromString(NodeType.serializer(), serialized)
+        val serialized = json.encodeToString(NodeType.serializer(), original)
+        val deserialized = json.decodeFromString(NodeType.serializer(), serialized)
         assertEquals(original, deserialized)
     }
 
     @Test
     fun `NodeType sealed hierarchy includes all 19 types`() {
-        val instances: List<NodeType> =
-            listOf(
-                StringType(),
-                NumberType(),
-                BooleanType(),
-                NullType(),
-                AnyType(),
-                UnknownType(),
-                UndefinedType(),
-                VoidType(),
-                NeverType(),
-                RefType(ref = "Foo"),
-                ObjectType(),
-                ArrayType(elementType = StringType()),
-                TupleType(elementTypes = emptyList(), minItems = 0),
-                RecordType(keyType = StringType(), valueType = AnyType()),
-                OrType(orTypes = emptyList()),
-                AndType(andTypes = emptyList()),
-                TemplateLiteralType(format = ".*"),
-                ConditionalType(
-                    check = ConditionalCheck(StringType(), NumberType()),
-                    value = ConditionalValue(BooleanType(), NullType()),
-                ),
-                FunctionType(parameters = emptyList()),
-            )
+        val instances = TestFixtures.allNodeTypeInstances
         assertEquals(19, instances.size)
         for (instance in instances) {
             assertNotNull(instance.type)
@@ -256,5 +237,210 @@ class XlrTypesTest {
         val prop = ObjectProperty(required = true, node = NumberType(const = 42.0))
         assertEquals(true, prop.required)
         assertIs<NumberType>(prop.node)
+    }
+
+    @Test
+    fun `RecordType defaults`() {
+        val r = RecordType(keyType = StringType(), valueType = AnyType())
+        assertEquals("record", r.type)
+        assertNull(r.name)
+        assertNull(r.title)
+        assertNull(r.description)
+        assertNull(r.source)
+        assertNull(r.genericTokens)
+    }
+
+    @Test
+    fun `ArrayType defaults`() {
+        val a = ArrayType(elementType = StringType())
+        assertEquals("array", a.type)
+        assertNull(a.name)
+        assertNull(a.source)
+        assertNull(a.genericTokens)
+    }
+
+    @Test
+    fun `TemplateLiteralType defaults`() {
+        val t = TemplateLiteralType(format = ".*")
+        assertEquals("template", t.type)
+        assertNull(t.name)
+        assertNull(t.source)
+        assertNull(t.genericTokens)
+    }
+
+    @Test
+    fun `OrType defaults`() {
+        val o = OrType(orTypes = listOf(StringType()))
+        assertEquals("or", o.type)
+        assertNull(o.name)
+        assertNull(o.source)
+        assertNull(o.genericTokens)
+    }
+
+    @Test
+    fun `AndType defaults`() {
+        val a = AndType(andTypes = listOf(StringType()))
+        assertEquals("and", a.type)
+        assertNull(a.name)
+        assertNull(a.source)
+        assertNull(a.genericTokens)
+    }
+
+    @Test
+    fun `RefType defaults`() {
+        val r = RefType(ref = "Foo")
+        assertEquals("ref", r.type)
+        assertNull(r.genericArguments)
+        assertNull(r.property)
+        assertNull(r.name)
+        assertNull(r.source)
+        assertNull(r.genericTokens)
+    }
+
+    @Test
+    fun `FunctionType defaults`() {
+        val f = FunctionType(parameters = emptyList())
+        assertEquals("function", f.type)
+        assertNull(f.returnType)
+        assertNull(f.name)
+        assertNull(f.source)
+        assertNull(f.genericTokens)
+    }
+
+    @Test
+    fun `FunctionParameter with all fields`() {
+        val p =
+            FunctionParameter(
+                name = "x",
+                type = StringType(),
+                optional = true,
+                default = StringType(const = "hi"),
+            )
+        assertEquals("x", p.name)
+        assertIs<StringType>(p.type)
+        assertEquals(true, p.optional)
+        val defaultNode = assertIs<StringType>(p.default)
+        assertEquals("hi", defaultNode.const)
+    }
+
+    @Test
+    fun `TupleMember defaults`() {
+        val m = TupleMember(type = StringType())
+        assertNull(m.name)
+        assertNull(m.optional)
+        assertIs<StringType>(m.type)
+    }
+
+    @Test
+    fun `XlrDocument defaults`() {
+        val doc = XlrDocument(name = "Test", source = "test.ts", objectType = ObjectType())
+        assertEquals("Test", doc.name)
+        assertEquals("test.ts", doc.source)
+        assertNull(doc.genericTokens)
+    }
+
+    @Test
+    fun `data class equality for identical instances`() {
+        val a = StringType(const = "hello", title = "Title")
+        val b = StringType(const = "hello", title = "Title")
+        assertEquals(a, b)
+        assertEquals(a.hashCode(), b.hashCode())
+    }
+
+    @Test
+    fun `data class inequality for different field values`() {
+        val a = StringType(const = "hello")
+        val b = StringType(const = "world")
+        assertNotEquals(a, b)
+    }
+
+    @Test
+    fun `data class copy with modified fields`() {
+        val original = StringType(const = "hello", title = "T")
+        val copied = original.copy(const = "world")
+        assertEquals("world", copied.const)
+        assertEquals("T", copied.title)
+    }
+
+    @Test
+    fun `StringType with JsonElement annotations`() {
+        val examples = Json.parseToJsonElement("""["a", "b"]""")
+        val defaultVal = Json.parseToJsonElement(""""hello"""")
+        val see = Json.parseToJsonElement("""{"ref": "OtherType"}""")
+        val s = StringType(examples = examples, default = defaultVal, see = see)
+        assertIs<JsonArray>(s.examples)
+        assertIs<JsonPrimitive>(s.default)
+        assertIs<JsonObject>(s.see)
+    }
+
+    @Test
+    fun `WholeNumberDoubleSerializer serializes negative whole number as integer`() {
+        val element = json.encodeToJsonElement(NodeType.serializer(), NumberType(const = -42.0))
+        assertEquals(JsonPrimitive(-42), element.jsonObject["const"])
+    }
+
+    @Test
+    fun `WholeNumberDoubleSerializer serializes zero as integer`() {
+        val element = json.encodeToJsonElement(NodeType.serializer(), NumberType(const = 0.0))
+        assertEquals(JsonPrimitive(0), element.jsonObject["const"])
+    }
+
+    @Test
+    fun `WholeNumberDoubleSerializer serializes large whole number as integer`() {
+        val element = json.encodeToJsonElement(NodeType.serializer(), NumberType(const = 1000000.0))
+        assertEquals(JsonPrimitive(1000000), element.jsonObject["const"])
+    }
+
+    @Test
+    fun `AdditionalItemsTypeSerializer encodes None to false`() {
+        val encoded = json.encodeToJsonElement(AdditionalItemsTypeSerializer, AdditionalItemsType.None)
+        assertEquals(JsonPrimitive(false), encoded)
+    }
+
+    @Test
+    fun `AdditionalItemsTypeSerializer encodes Typed to node object`() {
+        val encoded =
+            json.encodeToJsonElement(
+                AdditionalItemsTypeSerializer,
+                AdditionalItemsType.Typed(StringType()),
+            )
+        assertIs<JsonObject>(encoded)
+        assertEquals("string", encoded.jsonObject["type"]?.jsonPrimitive?.content)
+    }
+
+    @Test
+    fun `AdditionalItemsTypeSerializer decodes false to None`() {
+        val decoded = json.decodeFromJsonElement(AdditionalItemsTypeSerializer, JsonPrimitive(false))
+        assertIs<AdditionalItemsType.None>(decoded)
+    }
+
+    @Test
+    fun `AdditionalItemsTypeSerializer decodes JsonNull to None`() {
+        val decoded = json.decodeFromJsonElement(AdditionalItemsTypeSerializer, JsonNull)
+        assertIs<AdditionalItemsType.None>(decoded)
+    }
+
+    @Test
+    fun `AdditionalItemsTypeSerializer decodes node object to Typed`() {
+        val nodeJson = json.parseToJsonElement("""{"type": "string"}""")
+        val decoded = json.decodeFromJsonElement(AdditionalItemsTypeSerializer, nodeJson)
+        val typed = assertIs<AdditionalItemsType.Typed>(decoded)
+        assertIs<StringType>(typed.node)
+    }
+
+    @Test
+    fun `AdditionalItemsTypeSerializer round-trips None`() {
+        val original = AdditionalItemsType.None
+        val encoded = json.encodeToJsonElement(AdditionalItemsTypeSerializer, original)
+        val decoded = json.decodeFromJsonElement(AdditionalItemsTypeSerializer, encoded)
+        assertEquals(original, decoded)
+    }
+
+    @Test
+    fun `AdditionalItemsTypeSerializer round-trips Typed`() {
+        val original = AdditionalItemsType.Typed(StringType(const = "test"))
+        val encoded = json.encodeToJsonElement(AdditionalItemsTypeSerializer, original)
+        val decoded = json.decodeFromJsonElement(AdditionalItemsTypeSerializer, encoded)
+        assertEquals(original, decoded)
     }
 }

@@ -9,18 +9,7 @@ import kotlin.test.assertTrue
 class XlrGuardsTest {
     @Test
     fun `isPrimitiveType returns true for all primitive types`() {
-        val primitives =
-            listOf(
-                StringType(),
-                NumberType(),
-                BooleanType(),
-                NullType(),
-                AnyType(),
-                UnknownType(),
-                UndefinedType(),
-                VoidType(),
-                NeverType(),
-            )
+        val primitives = TestFixtures.allNodeTypeInstances.filter { isPrimitiveType(it) }
         for (node in primitives) {
             assertTrue(isPrimitiveType(node), "Expected true for ${node::class.simpleName}")
         }
@@ -28,22 +17,7 @@ class XlrGuardsTest {
 
     @Test
     fun `isPrimitiveType returns false for non-primitive types`() {
-        val nonPrimitives: List<NodeType> =
-            listOf(
-                ObjectType(properties = emptyMap()),
-                ArrayType(elementType = StringType()),
-                RefType(ref = "Foo"),
-                OrType(orTypes = listOf(StringType())),
-                AndType(andTypes = listOf(StringType())),
-                RecordType(keyType = StringType(), valueType = AnyType()),
-                TupleType(elementTypes = emptyList(), minItems = 0),
-                TemplateLiteralType(format = ".*"),
-                ConditionalType(
-                    check = ConditionalCheck(StringType(), NumberType()),
-                    value = ConditionalValue(BooleanType(), NullType()),
-                ),
-                FunctionType(parameters = emptyList()),
-            )
+        val nonPrimitives = TestFixtures.allNodeTypeInstances.filter { !isPrimitiveType(it) }
         for (node in nonPrimitives) {
             assertFalse(isPrimitiveType(node), "Expected false for ${node::class.simpleName}")
         }
@@ -219,5 +193,46 @@ class XlrGuardsTest {
                     ),
             )
         assertEquals(listOf("a", 3.0), getLiteralValues(union))
+    }
+
+    @Test
+    fun `isAssetRef returns false for similar but non-matching ref`() {
+        assertFalse(isAssetRef(RefType(ref = "Assets")))
+    }
+
+    @Test
+    fun `isBindingRef returns false for prefix-only match`() {
+        assertFalse(isBindingRef(RefType(ref = "BindingFoo")))
+    }
+
+    @Test
+    fun `isExpressionRef returns false for prefix-only match`() {
+        assertFalse(isExpressionRef(RefType(ref = "ExpressionFoo")))
+    }
+
+    @Test
+    fun `isLiteralUnion returns true for empty OrType`() {
+        assertTrue(isLiteralUnion(OrType(orTypes = emptyList())))
+    }
+
+    @Test
+    fun `getLiteralValues returns empty list for empty OrType`() {
+        assertEquals(emptyList<Any>(), getLiteralValues(OrType(orTypes = emptyList())))
+    }
+
+    @Test
+    fun `extractAssetTypeConstant returns null when genericArguments is null`() {
+        val ref = RefType(ref = "Asset<\"choice\">")
+        assertNull(extractAssetTypeConstant(ref))
+    }
+
+    @Test
+    fun `extractAssetTypeConstant returns null for StringType without const`() {
+        val ref =
+            RefType(
+                ref = "Asset<\"choice\">",
+                genericArguments = listOf(StringType()),
+            )
+        assertNull(extractAssetTypeConstant(ref))
     }
 }

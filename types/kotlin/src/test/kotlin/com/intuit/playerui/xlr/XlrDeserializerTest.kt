@@ -1,5 +1,9 @@
 package com.intuit.playerui.xlr
 
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonNull
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.jsonObject
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
@@ -10,30 +14,27 @@ import kotlin.test.assertTrue
 
 class XlrDeserializerTest {
     private val fixtureJson: String get() = TestFixtures.choiceAssetJson
+    private val doc by lazy { XlrDeserializer.deserialize(fixtureJson) }
 
     @Test
     fun `deserializes document name and source`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         assertEquals("ChoiceAsset", doc.name)
         assertTrue(doc.source.contains("choice/types.ts"))
     }
 
     @Test
     fun `deserializes document objectType as object`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         assertEquals("object", doc.objectType.type)
     }
 
     @Test
     fun `toObjectType returns equivalent ObjectType`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         val objType = doc.toObjectType()
         assertEquals(doc.objectType, objType)
     }
 
     @Test
     fun `deserializes properties map with correct keys`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         val props = doc.objectType.properties
         assertTrue(props.containsKey("title"))
         assertTrue(props.containsKey("note"))
@@ -45,7 +46,6 @@ class XlrDeserializerTest {
 
     @Test
     fun `deserializes title property as RefType`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         val titleProp = doc.objectType.properties["title"]!!
         assertEquals(false, titleProp.required)
         val node = assertIs<RefType>(titleProp.node)
@@ -58,7 +58,6 @@ class XlrDeserializerTest {
 
     @Test
     fun `deserializes binding property as RefType`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         val bindingNode = assertIs<RefType>(doc.objectType.properties["binding"]!!.node)
         assertEquals("Binding", bindingNode.ref)
         assertEquals("ChoiceAsset.binding", bindingNode.title)
@@ -67,7 +66,6 @@ class XlrDeserializerTest {
 
     @Test
     fun `deserializes items property as ArrayType with nested ObjectType`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         val itemsNode = assertIs<ArrayType>(doc.objectType.properties["items"]!!.node)
         val elementType = assertIs<ObjectType>(itemsNode.elementType)
         assertTrue(elementType.properties.containsKey("id"))
@@ -77,7 +75,6 @@ class XlrDeserializerTest {
 
     @Test
     fun `deserializes nested ChoiceItem id as required StringType`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         val itemsNode = assertIs<ArrayType>(doc.objectType.properties["items"]!!.node)
         val choiceItem = assertIs<ObjectType>(itemsNode.elementType)
         val idProp = choiceItem.properties["id"]!!
@@ -87,7 +84,6 @@ class XlrDeserializerTest {
 
     @Test
     fun `deserializes nested ValueType as OrType with 4 members`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         val itemsNode = assertIs<ArrayType>(doc.objectType.properties["items"]!!.node)
         val choiceItem = assertIs<ObjectType>(itemsNode.elementType)
         val valueNode = assertIs<OrType>(choiceItem.properties["value"]!!.node)
@@ -100,7 +96,6 @@ class XlrDeserializerTest {
 
     @Test
     fun `deserializes BeaconDataType as OrType with RecordType`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         val metaDataNode = assertIs<ObjectType>(doc.objectType.properties["metaData"]!!.node)
         val beaconNode = assertIs<OrType>(metaDataNode.properties["beacon"]!!.node)
         assertEquals(2, beaconNode.orTypes.size)
@@ -112,7 +107,6 @@ class XlrDeserializerTest {
 
     @Test
     fun `deserializes generic tokens on document`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         assertNotNull(doc.genericTokens)
         assertEquals(1, doc.genericTokens!!.size)
         val token = doc.genericTokens!!.first()
@@ -125,7 +119,6 @@ class XlrDeserializerTest {
 
     @Test
     fun `deserializes generic tokens on nested ChoiceItem`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         val itemsNode = assertIs<ArrayType>(doc.objectType.properties["items"]!!.node)
         val choiceItem = assertIs<ObjectType>(itemsNode.elementType)
         assertNotNull(choiceItem.genericTokens)
@@ -140,7 +133,6 @@ class XlrDeserializerTest {
 
     @Test
     fun `deserializes source on nested ChoiceItem`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         val itemsNode = assertIs<ArrayType>(doc.objectType.properties["items"]!!.node)
         val choiceItem = assertIs<ObjectType>(itemsNode.elementType)
         assertNotNull(choiceItem.source)
@@ -149,7 +141,6 @@ class XlrDeserializerTest {
 
     @Test
     fun `deserializes source on nested ValueType`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         val itemsNode = assertIs<ArrayType>(doc.objectType.properties["items"]!!.node)
         val choiceItem = assertIs<ObjectType>(itemsNode.elementType)
         val valueNode = assertIs<OrType>(choiceItem.properties["value"]!!.node)
@@ -159,7 +150,6 @@ class XlrDeserializerTest {
 
     @Test
     fun `deserializes source on nested BeaconMetaData`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         val metaDataNode = assertIs<ObjectType>(doc.objectType.properties["metaData"]!!.node)
         assertNotNull(metaDataNode.source)
         assertTrue(metaDataNode.source!!.contains("beacon"))
@@ -167,7 +157,6 @@ class XlrDeserializerTest {
 
     @Test
     fun `deserializes source on nested BeaconDataType`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         val metaDataNode = assertIs<ObjectType>(doc.objectType.properties["metaData"]!!.node)
         val beaconNode = assertIs<OrType>(metaDataNode.properties["beacon"]!!.node)
         assertNotNull(beaconNode.source)
@@ -176,7 +165,6 @@ class XlrDeserializerTest {
 
     @Test
     fun `root objectType carries source and genericTokens`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         assertNotNull(doc.objectType.source)
         assertTrue(doc.objectType.source!!.contains("choice/types.ts"))
         assertNotNull(doc.objectType.genericTokens)
@@ -191,7 +179,6 @@ class XlrDeserializerTest {
 
     @Test
     fun `nodes without source or genericTokens default to null`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         val bindingNode = assertIs<RefType>(doc.objectType.properties["binding"]!!.node)
         assertNull(bindingNode.source)
         assertNull(bindingNode.genericTokens)
@@ -199,7 +186,6 @@ class XlrDeserializerTest {
 
     @Test
     fun `deserializes extends clause with Asset choice`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         val ext = doc.objectType.extends
         assertNotNull(ext)
         assertEquals("Asset<\"choice\">", ext.ref)
@@ -211,26 +197,22 @@ class XlrDeserializerTest {
 
     @Test
     fun `deserializes additionalProperties as None for false`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         assertEquals(AdditionalItemsType.None, doc.objectType.additionalProperties)
     }
 
     @Test
     fun `deserializes annotation title on document`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         assertEquals("ChoiceAsset", doc.objectType.title)
     }
 
     @Test
     fun `deserializes annotation description on document`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         assertNotNull(doc.objectType.description)
         assertTrue(doc.objectType.description!!.startsWith("A choice asset"))
     }
 
     @Test
     fun `deserializes annotation title on nested nodes`() {
-        val doc = XlrDeserializer.deserialize(fixtureJson)
         val titleNode = assertIs<RefType>(doc.objectType.properties["title"]!!.node)
         assertEquals("ChoiceAsset.title", titleNode.title)
     }
@@ -238,7 +220,7 @@ class XlrDeserializerTest {
     @Test
     fun `parseNode throws for missing type field`() {
         val json =
-            kotlinx.serialization.json.Json
+            Json
                 .parseToJsonElement("""{"ref": "foo"}""")
         assertFailsWith<IllegalArgumentException> {
             XlrDeserializer.parseNode(json)
@@ -248,7 +230,7 @@ class XlrDeserializerTest {
     @Test
     fun `parseNode throws for unknown type`() {
         val json =
-            kotlinx.serialization.json.Json
+            Json
                 .parseToJsonElement("""{"type": "foobar"}""")
         assertFailsWith<IllegalArgumentException> {
             XlrDeserializer.parseNode(json)
@@ -257,14 +239,14 @@ class XlrDeserializerTest {
 
     @Test
     fun `parseNode handles JsonNull as NullType`() {
-        val node = XlrDeserializer.parseNode(kotlinx.serialization.json.JsonNull)
+        val node = XlrDeserializer.parseNode(JsonNull)
         assertIs<NullType>(node)
     }
 
     @Test
     fun `parseNode deserializes simple string type`() {
         val json =
-            kotlinx.serialization.json.Json
+            Json
                 .parseToJsonElement("""{"type": "string", "const": "hello"}""")
         val node = assertIs<StringType>(XlrDeserializer.parseNode(json))
         assertEquals("hello", node.const)
@@ -273,7 +255,7 @@ class XlrDeserializerTest {
     @Test
     fun `parseNode deserializes string type with enum`() {
         val json =
-            kotlinx.serialization.json.Json.parseToJsonElement(
+            Json.parseToJsonElement(
                 """{"type": "string", "enum": ["a", "b", "c"]}""",
             )
         val node = assertIs<StringType>(XlrDeserializer.parseNode(json))
@@ -283,7 +265,7 @@ class XlrDeserializerTest {
     @Test
     fun `parseNode deserializes number type with enum`() {
         val json =
-            kotlinx.serialization.json.Json
+            Json
                 .parseToJsonElement("""{"type": "number", "enum": [1.0, 2.0, 3.0]}""")
         val node = assertIs<NumberType>(XlrDeserializer.parseNode(json))
         assertEquals(listOf(1.0, 2.0, 3.0), node.enum)
@@ -292,7 +274,7 @@ class XlrDeserializerTest {
     @Test
     fun `parseNode deserializes boolean type with const`() {
         val json =
-            kotlinx.serialization.json.Json
+            Json
                 .parseToJsonElement("""{"type": "boolean", "const": true}""")
         val node = assertIs<BooleanType>(XlrDeserializer.parseNode(json))
         assertEquals(true, node.const)
@@ -301,7 +283,7 @@ class XlrDeserializerTest {
     @Test
     fun `parseNode deserializes template literal type`() {
         val json =
-            kotlinx.serialization.json.Json.parseToJsonElement(
+            Json.parseToJsonElement(
                 """{"type": "template", "format": "hello_\\d+"}""",
             )
         val node = assertIs<TemplateLiteralType>(XlrDeserializer.parseNode(json))
@@ -311,7 +293,7 @@ class XlrDeserializerTest {
     @Test
     fun `parseNode deserializes conditional type with structured check and value`() {
         val json =
-            kotlinx.serialization.json.Json.parseToJsonElement(
+            Json.parseToJsonElement(
                 """
                 {
                     "type": "conditional",
@@ -330,7 +312,7 @@ class XlrDeserializerTest {
     @Test
     fun `parseNode deserializes function type`() {
         val json =
-            kotlinx.serialization.json.Json.parseToJsonElement(
+            Json.parseToJsonElement(
                 """
                 {
                     "type": "function",
@@ -355,7 +337,7 @@ class XlrDeserializerTest {
     @Test
     fun `parseNode deserializes function type with parameter default`() {
         val json =
-            kotlinx.serialization.json.Json.parseToJsonElement(
+            Json.parseToJsonElement(
                 """
                 {
                     "type": "function",
@@ -374,7 +356,7 @@ class XlrDeserializerTest {
     @Test
     fun `parseNode deserializes ref type with property`() {
         val json =
-            kotlinx.serialization.json.Json.parseToJsonElement(
+            Json.parseToJsonElement(
                 """{"type": "ref", "ref": "Foo", "property": "bar"}""",
             )
         val node = assertIs<RefType>(XlrDeserializer.parseNode(json))
@@ -385,7 +367,7 @@ class XlrDeserializerTest {
     @Test
     fun `parseNode deserializes tuple type`() {
         val json =
-            kotlinx.serialization.json.Json.parseToJsonElement(
+            Json.parseToJsonElement(
                 """
                 {
                     "type": "tuple",
@@ -410,7 +392,7 @@ class XlrDeserializerTest {
     @Test
     fun `parseNode deserializes tuple member without name`() {
         val json =
-            kotlinx.serialization.json.Json.parseToJsonElement(
+            Json.parseToJsonElement(
                 """
                 {
                     "type": "tuple",
@@ -428,7 +410,7 @@ class XlrDeserializerTest {
     @Test
     fun `parseNode deserializes and type`() {
         val json =
-            kotlinx.serialization.json.Json.parseToJsonElement(
+            Json.parseToJsonElement(
                 """{"type": "and", "and": [{"type": "string"}, {"type": "number"}]}""",
             )
         val node = assertIs<AndType>(XlrDeserializer.parseNode(json))
@@ -442,7 +424,7 @@ class XlrDeserializerTest {
         val simpleTypes = listOf("any", "unknown", "undefined", "void", "never", "null")
         for (typeName in simpleTypes) {
             val json =
-                kotlinx.serialization.json.Json
+                Json
                     .parseToJsonElement("""{"type": "$typeName"}""")
             val node = XlrDeserializer.parseNode(json)
             assertEquals(typeName, node.type, "Failed for type: $typeName")
@@ -452,7 +434,7 @@ class XlrDeserializerTest {
     @Test
     fun `additionalProperties Typed parses NodeType`() {
         val json =
-            kotlinx.serialization.json.Json.parseToJsonElement(
+            Json.parseToJsonElement(
                 """
                 {
                     "type": "object",
@@ -469,7 +451,7 @@ class XlrDeserializerTest {
     @Test
     fun `additionalProperties null becomes None`() {
         val json =
-            kotlinx.serialization.json.Json.parseToJsonElement(
+            Json.parseToJsonElement(
                 """{"type": "object", "properties": {}}""",
             )
         val node = assertIs<ObjectType>(XlrDeserializer.parseNode(json))
@@ -479,7 +461,7 @@ class XlrDeserializerTest {
     @Test
     fun `parseNode preserves source and genericTokens on node`() {
         val json =
-            kotlinx.serialization.json.Json.parseToJsonElement(
+            Json.parseToJsonElement(
                 """
                 {
                     "type": "object",
@@ -503,7 +485,7 @@ class XlrDeserializerTest {
     @Test
     fun `throws on RefType missing ref`() {
         val json =
-            kotlinx.serialization.json.Json.parseToJsonElement(
+            Json.parseToJsonElement(
                 """{"type": "ref"}""",
             )
         assertFailsWith<IllegalArgumentException> {
@@ -514,7 +496,7 @@ class XlrDeserializerTest {
     @Test
     fun `throws on TemplateLiteralType missing format`() {
         val json =
-            kotlinx.serialization.json.Json.parseToJsonElement(
+            Json.parseToJsonElement(
                 """{"type": "template"}""",
             )
         assertFailsWith<IllegalArgumentException> {
@@ -525,7 +507,7 @@ class XlrDeserializerTest {
     @Test
     fun `throws on ArrayType missing elementType`() {
         val json =
-            kotlinx.serialization.json.Json.parseToJsonElement(
+            Json.parseToJsonElement(
                 """{"type": "array"}""",
             )
         assertFailsWith<IllegalArgumentException> {
@@ -536,7 +518,7 @@ class XlrDeserializerTest {
     @Test
     fun `throws on RecordType missing keyType`() {
         val json =
-            kotlinx.serialization.json.Json.parseToJsonElement(
+            Json.parseToJsonElement(
                 """{"type": "record", "valueType": {"type": "any"}}""",
             )
         assertFailsWith<IllegalArgumentException> {
@@ -547,7 +529,7 @@ class XlrDeserializerTest {
     @Test
     fun `throws on ConditionalType missing check`() {
         val json =
-            kotlinx.serialization.json.Json.parseToJsonElement(
+            Json.parseToJsonElement(
                 """
                 {
                     "type": "conditional",
@@ -558,5 +540,98 @@ class XlrDeserializerTest {
         assertFailsWith<IllegalArgumentException> {
             XlrDeserializer.parseNode(json)
         }
+    }
+
+    @Test
+    fun `parseDocument throws for non-ObjectType root`() {
+        val json =
+            Json
+                .parseToJsonElement(
+                    """{"type": "string", "const": "hello"}""",
+                ).jsonObject
+        assertFailsWith<IllegalArgumentException> {
+            XlrDeserializer.parseDocument(json)
+        }
+    }
+
+    @Test
+    fun `parseDocument throws when name is missing`() {
+        val json =
+            Json
+                .parseToJsonElement(
+                    """{"type": "object", "properties": {}, "additionalProperties": false, "source": "test.ts"}""",
+                ).jsonObject
+        assertFailsWith<IllegalArgumentException> {
+            XlrDeserializer.parseDocument(json)
+        }
+    }
+
+    @Test
+    fun `parseDocument throws when source is missing`() {
+        val json =
+            Json
+                .parseToJsonElement(
+                    """{"type": "object", "properties": {}, "additionalProperties": false, "name": "Test"}""",
+                ).jsonObject
+        assertFailsWith<IllegalArgumentException> {
+            XlrDeserializer.parseDocument(json)
+        }
+    }
+
+    @Test
+    fun `deserialize throws for invalid JSON string`() {
+        assertFailsWith<IllegalArgumentException> {
+            XlrDeserializer.deserialize("not valid json {{{")
+        }
+    }
+
+    @Test
+    fun `parseNode throws for JsonPrimitive`() {
+        assertFailsWith<IllegalArgumentException> {
+            XlrDeserializer.parseNode(JsonPrimitive("hello"))
+        }
+    }
+
+    @Test
+    fun `parseNode deserializes OrType with source and annotations`() {
+        val json =
+            Json.parseToJsonElement(
+                """{"type": "or", "or": [{"type": "string"}], "source": "test.ts", "title": "MyUnion"}""",
+            )
+        val node = assertIs<OrType>(XlrDeserializer.parseNode(json))
+        assertEquals("test.ts", node.source)
+        assertEquals("MyUnion", node.title)
+    }
+
+    @Test
+    fun `parseDocument with genericTokens as explicit JsonNull`() {
+        val json =
+            Json
+                .parseToJsonElement(
+                    """
+                    {
+                        "type": "object", "properties": {}, "additionalProperties": false,
+                        "name": "Test", "source": "test.ts", "genericTokens": null
+                    }
+                    """.trimIndent(),
+                ).jsonObject
+        val doc = XlrDeserializer.parseDocument(json)
+        assertNull(doc.genericTokens)
+    }
+
+    @Test
+    fun `parseDocument with no genericTokens key`() {
+        val json =
+            Json
+                .parseToJsonElement(
+                    """
+                    {
+                        "type": "object", "properties": {}, "additionalProperties": false,
+                        "name": "Test", "source": "test.ts"
+                    }
+                    """.trimIndent(),
+                ).jsonObject
+        val doc = XlrDeserializer.parseDocument(json)
+        assertNull(doc.genericTokens)
     }
 }
