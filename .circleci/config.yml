@@ -37,6 +37,7 @@ commands:
       - setup_auth
       - run: echo "//registry.npmjs.com/:_authToken=$NPM_TOKEN" >> ~/.npmrc
       - run: echo -e $GPG_KEY | gpg --import --batch
+      - run: echo -e "pinentry-mode loopback\npassphrase $DEPLOY_MAVEN_GPG_PASSPHRASE" > ~/.gnupg/gpg.conf
       - run: |
           source ~/.bashrc
           npx auto shipit --only-graduate-with-release-label -vv

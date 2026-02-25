@@ -76,8 +76,17 @@ maven.install(
         "org.jetbrains.kotlin:kotlin-stdlib:2.3.0",
         "org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0",
         "org.jetbrains.kotlin:kotlin-test:2.3.0",
-        "org.jetbrains.kotlin:kotlin-test-junit:2.3.0",
-        "junit:junit:4.13.2",
+        "org.jetbrains.kotlin:kotlin-test-junit5:2.3.0",
+        "org.junit.jupiter:junit-jupiter-api:5.7.2",
+        "org.junit.jupiter:junit-jupiter-engine:5.7.2",
+        "org.junit.jupiter:junit-jupiter-params:5.7.2",
+        "org.junit.platform:junit-platform-commons:1.7.2",
+        "org.junit.platform:junit-platform-console:1.7.2",
+        "org.junit.platform:junit-platform-engine:1.7.2",
+        "org.junit.platform:junit-platform-launcher:1.7.2",
+        "org.junit.platform:junit-platform-suite-api:1.7.2",
+        "org.apiguardian:apiguardian-api:1.0.0",
+        "org.opentest4j:opentest4j:1.1.1",
     ],
     repositories = [
         "https://repo1.maven.org/maven2",
@@ -89,5 +98,8 @@ use_repo(maven, "maven")
 build_constants = use_repo_rule("@rules_player//distribution:defs.bzl", "build_constants")
 build_constants(
     name = "build_constants",
+    constants = {
+        "GROUP": "com.intuit.playerui.xlr",
+    },
     version_file = "//:VERSION",
 )
