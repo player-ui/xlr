@@ -10,6 +10,6 @@
     "@xlr-lib/test-utils": "workspace:*"
   },
   "bin": {
-    "player": "bin/run"
+    "xlr": "bin/run"
   }
 }

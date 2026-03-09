@@ -23,4 +23,7 @@ js_pipeline(
         ":node_modules/@xlr-lib/xlr",
         ":node_modules/@xlr-lib/xlr-utils",
     ],
+    create_package_json_args = {
+        "custom_entrypoints": True
+    }
 )
