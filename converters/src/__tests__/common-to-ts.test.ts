@@ -1,7 +1,7 @@
 import { test, describe, expect, vi } from "vitest";
 import type { NamedType } from "@xlr-lib/xlr";
 import ts from "typescript";
-import { TSWriter } from "../xlr-to-ts";
+import { TSWriter } from "../ts/xlr-to-ts";
 
 describe("Type Exports", () => {
   vi.setConfig({
