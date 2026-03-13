@@ -1,3 +1,23 @@
+# 0.1.1-next.2 (Fri Mar 13 2026)
+
+### Release Notes
+
+#### Create Entrypoint for Standalone XLR Export ([#2](https://github.com/player-ui/xlr/pull/2))
+
+Offer single file export from `converters` package
+
+---
+
+#### 🚀 Enhancement
+
+- Create Entrypoint for Standalone XLR Export [#2](https://github.com/player-ui/xlr/pull/2) ([@KetanReddy](https://github.com/KetanReddy))
+
+#### Authors: 1
+
+- Ketan Reddy ([@KetanReddy](https://github.com/KetanReddy))
+
+---
+
 # 0.1.1-next.1 (Tue Feb 17 2026)
 
 ### Release Notes
