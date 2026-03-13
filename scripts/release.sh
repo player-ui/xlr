@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 # See https://github.com/bazelbuild/rules_nodejs/blob/stable/scripts/publish_release.sh 
 
-set -u -o pipefail
+set -eu -o pipefail
 
 readonly PKG_NPM_LABELS=`bazel query --output=label 'kind("npm_package rule", //...) - attr("tags", "\[.*do-not-publish.*\]", //...)'`
 NPM_TAG=canary
@@ -30,3 +30,13 @@ readonly PKG_PYPI_LABELS=`bazel query --output=label 'kind("py_wheel rule", //..
 for pkg in $PKG_PYPI_LABELS ; do
   TWINE_USERNAME=$PYPI_USER TWINE_PASSWORD=$PYPI_TOKEN bazel run --config=release ${pkg}.publish --
 done
+
+# Maven Central Publishing
+MVN_RELEASE_TYPE=snapshot
+if [ "$RELEASE_TYPE" == "release" ] && [ "$CURRENT_BRANCH" == "main" ]; then
+  MVN_RELEASE_TYPE=release
+fi
+
+echo "Publishing Maven Packages with release type: ${MVN_RELEASE_TYPE} on branch: ${CURRENT_BRANCH}"
+bazel build --config=release @rules_player//distribution:staged-maven-deploy
+bazel run --config=release @rules_player//distribution:staged-maven-deploy -- "$MVN_RELEASE_TYPE" --package-group=com.intuit.playerui.xlr --client-timeout=600 --connect-timeout=600
