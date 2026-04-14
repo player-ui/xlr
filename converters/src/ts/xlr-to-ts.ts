@@ -607,6 +607,7 @@ export function exportTypesToTypeScript(
 
   importMap.forEach((imports, packageName) => {
     const applicableImports = imports.filter((i) => referencedImports.has(i));
+    if (applicableImports.length === 0) return;
     resultFile = ts.factory.updateSourceFile(resultFile, [
       ts.factory.createImportDeclaration(
         /* modifiers */ undefined,

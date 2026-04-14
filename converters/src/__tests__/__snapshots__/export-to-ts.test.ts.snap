@@ -1,0 +1,30 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`exportTypesToTypeScript > emits import declarations for referenced types 1`] = `
+"import { Asset } from "@player-ui/types";
+
+export interface Wrapper {
+    asset: Asset;
+}"
+`;
+
+exports[`exportTypesToTypeScript > exports named types as a .d.ts string 1`] = `
+"
+export interface Asset {
+    id: string;
+    type: string;
+}
+export interface ActionAsset {
+    id: string;
+    type: 'action';
+    value?: string;
+}"
+`;
+
+exports[`exportTypesToTypeScript > skips import declarations for unreferenced packages 1`] = `
+"
+export interface Asset {
+    id: string;
+    type: string;
+}"
+`;
