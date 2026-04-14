@@ -1,3 +1,3 @@
-import type { TSManifest } from "@xlr-lib/xlr";
+import type { TSManifest } from "@player-tools/xlr";
 
 export type Types = TSManifest;
