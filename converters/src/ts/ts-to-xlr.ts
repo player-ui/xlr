@@ -15,29 +15,31 @@ import type {
   ArrayType,
   OrType,
 } from "@xlr-lib/xlr";
-import type { TopLevelDeclaration, TopLevelNode } from "@xlr-lib/xlr-utils";
+import type { TopLevelDeclaration, TopLevelNode } from "./ts-utils";
 import {
   buildTemplateRegex,
-  decorateNode,
-  fillInGenerics,
   getReferencedType,
   getStringLiteralsFromUnion,
   isExportedDeclaration,
   isGenericInterfaceDeclaration,
-  isGenericNodeType,
   isGenericTypeDeclaration,
   isOptionalProperty,
   isTypeReferenceGeneric,
   tsStripOptionalType,
+  isTopLevelNode,
+  isTopLevelDeclaration,
+  isTypeScriptLibType,
+} from "./ts-utils";
+import { decorateNode } from "./annotations";
+import {
+  fillInGenerics,
   isNonNullable,
   applyPartialOrRequiredToNodeType,
   applyPickOrOmitToNodeType,
-  isTopLevelNode,
-  isTopLevelDeclaration,
-  resolveConditional,
   applyExcludeToNodeType,
+  isGenericNodeType,
+  resolveConditional,
   isPrimitiveTypeNode,
-  isTypeScriptLibType,
 } from "@xlr-lib/xlr-utils";
 import { ConversionError } from "../types";
 

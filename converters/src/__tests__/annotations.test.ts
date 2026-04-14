@@ -1,6 +1,6 @@
 import { test, expect, describe } from "vitest";
 import { setupTestEnv } from "@xlr-lib/test-utils";
-import { decorateNode } from "../annotations";
+import { decorateNode } from "../ts/annotations";
 
 describe("Annotations", () => {
   test("JSDoc comments to strings", () => {

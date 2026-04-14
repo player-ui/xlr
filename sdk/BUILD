@@ -10,9 +10,7 @@ vitest_config(name = "vitest_config")
 
 js_pipeline(
     package_name = "@xlr-lib/xlr-sdk",
-    peer_deps = [
-        "//:node_modules/typescript",
-    ],
+    peer_deps = [],
     test_deps = [
         ":node_modules",
         "//:vitest_config",
@@ -20,7 +18,6 @@ js_pipeline(
     ],
     deps = [
         ":node_modules/@xlr-lib/xlr",
-        ":node_modules/@xlr-lib/xlr-converters",
         ":node_modules/@xlr-lib/xlr-utils",
         "//:node_modules/@types/fs-extra",
         "//:node_modules/@types/node",

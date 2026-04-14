@@ -1,71 +1,10 @@
 import { test, expect, describe } from "vitest";
-import * as ts from "typescript";
 import { NodeType } from "@xlr-lib/xlr";
 
 import {
-  tsStripOptionalType,
-  isExportedDeclaration,
   applyPickOrOmitToNodeType,
-  getStringLiteralsFromUnion,
   applyPartialOrRequiredToNodeType,
-} from "../ts-helpers";
-
-test("tsStripOptionalType", () => {
-  const input: ts.TypeNode = ts.factory.createKeywordTypeNode(
-    ts.SyntaxKind.StringKeyword,
-  );
-  const expected: ts.TypeNode = ts.factory.createKeywordTypeNode(
-    ts.SyntaxKind.StringKeyword,
-  );
-  const actual = tsStripOptionalType(input);
-  expect(actual).toEqual(expected);
-});
-
-describe("isExportedDeclaration", () => {
-  test("should return false for a non exported Statement", () => {
-    const source = ts.createSourceFile(
-      "test.ts",
-      `
-        interface Test {
-          prop?: string;
-        }
-      `,
-      ts.ScriptTarget.Latest,
-      true,
-    );
-    const node = source.statements[0] as ts.Statement;
-
-    const result = isExportedDeclaration(node);
-    expect(result).toBe(false);
-  });
-
-  test("should return true for an exported Statement", () => {
-    const source = ts.createSourceFile(
-      "test.ts",
-      `
-          export interface Test {
-            prop?: string;
-          }
-        `,
-      ts.ScriptTarget.Latest,
-      true,
-    );
-    const node = source.statements[0] as ts.Statement;
-
-    const result = isExportedDeclaration(node);
-    expect(result).toBe(true);
-  });
-});
-
-test("getStringLiteralsFromUnion", () => {
-  const input: ts.Node = ts.factory.createUnionTypeNode([
-    ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral("foo")),
-    ts.factory.createLiteralTypeNode(ts.factory.createStringLiteral("bar")),
-  ]);
-  const expected: Set<string> = new Set(["foo", "bar"]);
-  const actual = getStringLiteralsFromUnion(input);
-  expect(actual).toEqual(expected);
-});
+} from "../xlr-helpers";
 
 describe("applyPickOrOmitToNodeType", () => {
   test("Omit - Doesn't filter property that doesn't exist", () => {

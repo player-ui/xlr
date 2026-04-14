@@ -1,7 +1,7 @@
 load("@npm//:defs.bzl", "npm_link_all_packages")
 load("@rules_player//javascript:defs.bzl", "js_pipeline")
 load("//helpers:defs.bzl", "tsup_config", "vitest_config")
-load("@aspect_rules_js//js:defs.bzl", "js_binary", "js_library")
+load("@aspect_rules_js//js:defs.bzl", "js_library")
 
 npm_link_all_packages(name = "node_modules")
 
@@ -17,9 +17,7 @@ js_library(
 
 js_pipeline(
     package_name = "@xlr-lib/xlr-converters",
-    peer_deps = [
-        "//:node_modules/typescript",
-    ],
+    peer_deps = [],
     test_deps = [
         "//:node_modules",
         "//:vitest_config",
@@ -29,6 +27,7 @@ js_pipeline(
     deps = [
         ":node_modules/@xlr-lib/xlr",
         ":node_modules/@xlr-lib/xlr-utils",
+        "//:node_modules/typescript",
     ],
     include_packaging_targets = [
        ":entrypoint"
