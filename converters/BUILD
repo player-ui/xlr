@@ -32,7 +32,4 @@ js_pipeline(
     include_packaging_targets = [
        ":entrypoint"
     ],
-    create_package_json_args = {
-        "custom_entrypoints": True
-    }
 )

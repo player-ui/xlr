@@ -1,9 +1,5 @@
 import ts from "typescript";
 
-// ---------------------------------------------------------------------------
-// TypeScript-AST-specific type guards (moved from utils/src/type-checks.ts)
-// ---------------------------------------------------------------------------
-
 /**
  * Returns if the Object Property is optional
  */
@@ -75,10 +71,6 @@ export function isTopLevelNode(node: ts.Node): node is TopLevelNode {
   );
 }
 
-// ---------------------------------------------------------------------------
-// TypeScript-AST helper functions (moved from utils/src/ts-helpers.ts)
-// ---------------------------------------------------------------------------
-
 /**
  * Returns the required type or the optionally required type
  */
@@ -118,7 +110,12 @@ export function isNodeExported(node: ts.Node): boolean {
 export function getReferencedType(
   node: ts.TypeReferenceNode,
   typeChecker: ts.TypeChecker,
-) {
+):
+  | {
+      declaration: ts.TypeAliasDeclaration | ts.InterfaceDeclaration;
+      exported: boolean;
+    }
+  | undefined {
   let symbol = typeChecker.getSymbolAtLocation(node.typeName);
 
   if (
@@ -238,4 +235,13 @@ export function buildTemplateRegex(
     regex += span.literal.text;
   });
   return regex;
+}
+
+/**
+ * Returns if the top level declaration is exported
+ */
+export function isExportedModuleDeclaration(
+  node: ts.Statement,
+): node is ts.ModuleDeclaration {
+  return isExportedDeclaration(node) && ts.isModuleDeclaration(node);
 }

@@ -1,3 +1,43 @@
+# 0.1.1-next.4 (Tue Apr 14 2026)
+
+### Release Notes
+
+#### Fix `package.json` issue with Converters Package ([#10](https://github.com/player-ui/xlr/pull/10))
+
+Fix type export for `@xlr-lib/converters` package causing `ERR_UNSUPPORTED_NODE_MODULES_TYPE_STRIPPING` error when imported
+
+---
+
+#### 🐛 Bug Fix
+
+- Fix `package.json` issue with Converters Package [#10](https://github.com/player-ui/xlr/pull/10) ([@KetanReddy](https://github.com/KetanReddy))
+
+#### Authors: 1
+
+- Ketan Reddy ([@KetanReddy](https://github.com/KetanReddy))
+
+---
+
+# 0.1.1-next.3 (Tue Apr 14 2026)
+
+### Release Notes
+
+#### Bring in Changes from Tools Repo ([#8](https://github.com/player-ui/xlr/pull/8))
+
+Sync latest from upstream tools repository.
+
+---
+
+#### 🐛 Bug Fix
+
+- Bring in Changes from Tools Repo [#8](https://github.com/player-ui/xlr/pull/8) ([@KetanReddy](https://github.com/KetanReddy))
+
+#### Authors: 1
+
+- Ketan Reddy ([@KetanReddy](https://github.com/KetanReddy))
+
+---
+
 # 0.1.1-next.2 (Fri Mar 13 2026)
 
 ### Release Notes

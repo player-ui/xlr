@@ -1,5 +1,5 @@
 import { test, expect, describe } from "vitest";
-import type { NamedType, OrType } from "@xlr-lib/xlr";
+import type { NamedType, OrType, ObjectType } from "@xlr-lib/xlr";
 import { parseTree } from "jsonc-parser";
 import { Types, ReferenceAssetsWebPluginManifest } from "@xlr-lib/static-xlrs";
 import type { Filters } from "../registry";
@@ -69,6 +69,19 @@ describe("Object Recall", () => {
     sdk.loadDefinitionsFromModule(ReferenceAssetsWebPluginManifest);
 
     expect(sdk.getType("InputAsset")).toMatchSnapshot();
+  });
+
+  test("Test Correct Generic Cascading", () => {
+    const sdk = new XLRSDK();
+    sdk.loadDefinitionsFromModule(Types);
+    sdk.loadDefinitionsFromModule(ReferenceAssetsWebPluginManifest);
+    const Flow = sdk.getType("Flow") as ObjectType;
+    const Schema = Flow.properties["schema"].node as ObjectType;
+    const Node = Schema.additionalProperties as ObjectType;
+    const DataTypes = Node.additionalProperties as OrType;
+    const DataType = DataTypes.or[0] as ObjectType;
+    const df = DataType.properties["default"].node;
+    expect(df.type).toBe("unknown");
   });
 });
 
