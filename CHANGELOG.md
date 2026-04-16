@@ -1,3 +1,47 @@
+# 0.1.1-next.5 (Thu Apr 16 2026)
+
+### Release Notes
+
+#### Remove TypeScript Dependencies From SDK Import Chain ([#9](https://github.com/player-ui/xlr/pull/9))
+
+The typescript npm package (~10 MB) was being pulled into every browser bundle that used `@xlr-lib/xlr-sdk` even though TypeScript's compiler API is only needed at build time (for .ts → XLR conversion).
+
+### @xlr-lib/xlr-sdk
+
+XLRSDK.exportRegistry() has been removed. Use exportTypesToTypeScript from @xlr-lib/xlr-converters instead:
+
+// Before
+```
+const output = sdk.exportRegistry("TypeScript", importMap);
+```
+
+// After
+```
+import { exportTypesToTypeScript } from "@xlr-lib/xlr-converters";
+const output = exportTypesToTypeScript(sdk.listTypes(), importMap);
+```
+
+### @xlr-lib/xlr-utils
+
+The following TypeScript-compiler-API-specific exports have been moved to the `@xlr-lib/xlr-converters` package:
+
+`decorateNode`, `createDocString`, `createTSDocString`, `symbolDisplayToString`, `tsStripOptionalType`, `isExportedDeclaration`,` isNodeExported`, `getReferencedType`, `isTypeScriptLibType`, `getStringLiteralsFromUnion`, `buildTemplateRegex`, `isOptionalProperty`,` isGenericInterfaceDeclaration`, `isGenericTypeDeclaration`, `isTypeReferenceGeneric`, `TopLevelDeclaration`, `isTopLevelDeclaration`, `TopLevelNode`, `isTopLevelNode`
+
+### @xlr-lib/xlr-converters
+Now contains all TypeScript compiler related code:
+
+---
+
+#### 🐛 Bug Fix
+
+- Remove TypeScript Dependencies From SDK Import Chain [#9](https://github.com/player-ui/xlr/pull/9) ([@KetanReddy](https://github.com/KetanReddy))
+
+#### Authors: 1
+
+- Ketan Reddy ([@KetanReddy](https://github.com/KetanReddy))
+
+---
+
 # 0.1.1-next.4 (Tue Apr 14 2026)
 
 ### Release Notes
