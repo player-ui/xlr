@@ -1,6 +1,6 @@
 import { test, expect, describe } from "vitest";
 import type { FunctionType, OrType, TupleType } from "@xlr-lib/xlr";
-import { createDocString } from "../documentation";
+import { createDocString } from "../ts/documentation";
 
 describe("docs", () => {
   test("or", () => {

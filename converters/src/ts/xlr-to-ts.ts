@@ -12,7 +12,7 @@ import type {
   TemplateLiteralType,
   TupleType,
 } from "@xlr-lib/xlr";
-import type { TopLevelDeclaration } from "@xlr-lib/xlr-utils";
+import type { TopLevelDeclaration } from "./ts-utils";
 import { isGenericNamedType, isPrimitiveTypeNode } from "@xlr-lib/xlr-utils";
 import ts from "typescript";
 import { ConversionError } from "../types";
@@ -558,4 +558,79 @@ export class TSWriter {
       node,
     );
   }
+}
+
+/**
+ * Converts a list of XLR NamedTypes to a TypeScript `.d.ts` string.
+ *
+ * @param typesToExport - The types to include in the output
+ * @param importMap - Map of package name → exported symbol names; only symbols
+ *   that are actually referenced will be emitted as import declarations
+ * @returns The full content of a `.d.ts` file as a string
+ */
+export function exportTypesToTypeScript(
+  typesToExport: NamedType[],
+  importMap: Map<string, string[]>,
+): string {
+  const writer = new TSWriter();
+  const referencedImports: Set<string> = new Set();
+  const exportedTypes: Map<string, TopLevelDeclaration> = new Map();
+  const printer = ts.createPrinter({ newLine: ts.NewLineKind.LineFeed });
+
+  let resultFile = ts.createSourceFile(
+    "output.d.ts",
+    "",
+    ts.ScriptTarget.ES2017,
+    false,
+    ts.ScriptKind.TS,
+  );
+
+  typesToExport.forEach((typeNode) => {
+    const { type, referencedTypes, additionalTypes } =
+      writer.convertNamedType(typeNode);
+    exportedTypes.set(typeNode.name, type);
+    additionalTypes?.forEach((additionalType, name) =>
+      exportedTypes.set(name, additionalType),
+    );
+    referencedTypes?.forEach((referencedType) =>
+      referencedImports.add(referencedType),
+    );
+  });
+
+  const typesToPrint: Array<string> = [];
+
+  exportedTypes.forEach((type) =>
+    typesToPrint.push(
+      printer.printNode(ts.EmitHint.Unspecified, type, resultFile),
+    ),
+  );
+
+  importMap.forEach((imports, packageName) => {
+    const applicableImports = imports.filter((i) => referencedImports.has(i));
+    if (applicableImports.length === 0) return;
+    resultFile = ts.factory.updateSourceFile(resultFile, [
+      ts.factory.createImportDeclaration(
+        /* modifiers */ undefined,
+        ts.factory.createImportClause(
+          false,
+          undefined,
+          ts.factory.createNamedImports(
+            applicableImports.map((i) =>
+              ts.factory.createImportSpecifier(
+                false,
+                undefined,
+                ts.factory.createIdentifier(i),
+              ),
+            ),
+          ),
+        ),
+        ts.factory.createStringLiteral(packageName),
+      ),
+      ...resultFile.statements,
+    ]);
+  });
+
+  const headerText = printer.printFile(resultFile);
+  const nodeText = typesToPrint.join("\n");
+  return `${headerText}\n${nodeText}`;
 }

@@ -11,7 +11,6 @@ vitest_config(name = "vitest_config")
 js_pipeline(
     package_name = "@xlr-lib/xlr-utils",
     peer_deps = [
-        "//:node_modules/typescript",
         "//:node_modules/jsonc-parser",
     ],
     test_deps = [

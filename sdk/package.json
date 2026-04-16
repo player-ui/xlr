@@ -4,8 +4,7 @@
   "main": "src/index.ts",
   "dependencies": {
     "@xlr-lib/xlr": "workspace:*",
-    "@xlr-lib/xlr-utils": "workspace:*",
-    "@xlr-lib/xlr-converters": "workspace:*"
+    "@xlr-lib/xlr-utils": "workspace:*"
   },
   "devDependencies": {
     "@xlr-lib/static-xlrs": "workspace:*"

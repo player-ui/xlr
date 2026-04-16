@@ -6,7 +6,7 @@ import type {
   RefNode,
 } from "@xlr-lib/xlr";
 import { isGenericNodeType, isPrimitiveTypeNode } from "./type-checks";
-import { fillInGenerics } from "./ts-helpers";
+import { fillInGenerics } from "./xlr-helpers";
 
 export interface PropertyNode {
   /** Equivalent Property Name */

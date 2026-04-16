@@ -1,7 +1,7 @@
 import ts from "typescript";
 import type { SymbolDisplayPart } from "typescript";
 import type { NodeType } from "@xlr-lib/xlr";
-import { isPrimitiveTypeNode } from "./type-checks";
+import { isPrimitiveTypeNode } from "@xlr-lib/xlr-utils";
 
 const { SymbolDisplayPartKind, displayPartsToString } = ts;
 

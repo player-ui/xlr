@@ -1,8 +1,5 @@
 import type { Node } from "jsonc-parser";
 
-/** Support Export Formats */
-export type ExportTypes = "TypeScript";
-
 export interface BaseValidationMessage<ErrorType extends string = string> {
   /** Validation Type */
   type: ErrorType;

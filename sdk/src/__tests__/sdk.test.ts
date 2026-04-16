@@ -1,10 +1,5 @@
 import { test, expect, describe } from "vitest";
-import type {
-  NamedType,
-  TransformFunction,
-  OrType,
-  ObjectType,
-} from "@xlr-lib/xlr";
+import type { NamedType, OrType, ObjectType } from "@xlr-lib/xlr";
 import { parseTree } from "jsonc-parser";
 import { Types, ReferenceAssetsWebPluginManifest } from "@xlr-lib/static-xlrs";
 import type { Filters } from "../registry";
@@ -157,85 +152,6 @@ describe("Validation", () => {
     expect(
       sdk.validateByType(inputAsset as NamedType, mockAsset),
     ).toMatchSnapshot();
-  });
-});
-
-describe("Export Test", () => {
-  test("Exports Typescript types", () => {
-    const importMap = new Map([
-      [
-        "@player-ui/types",
-        ["Expression", "Asset", "Binding", "AssetWrapper", "Schema.DataType"],
-      ],
-    ]);
-
-    const sdk = new XLRSDK();
-    sdk.loadDefinitionsFromModule(Types);
-    sdk.loadDefinitionsFromModule(ReferenceAssetsWebPluginManifest);
-    const results = sdk.exportRegistry("TypeScript", importMap);
-    expect(results[0][0]).toBe("out.d.ts");
-    expect(results[0][1]).toMatchSnapshot();
-  });
-
-  test("Exports Typescript Types With Filters", () => {
-    const importMap = new Map([
-      [
-        "@player-ui/types",
-        ["Expression", "Asset", "Binding", "AssetWrapper", "Schema.DataType"],
-      ],
-    ]);
-
-    const sdk = new XLRSDK();
-    sdk.loadDefinitionsFromModule(Types);
-    sdk.loadDefinitionsFromModule(ReferenceAssetsWebPluginManifest);
-    const results = sdk.exportRegistry("TypeScript", importMap, {
-      typeFilter: "Transformed",
-      pluginFilter: "Types",
-    });
-    expect(results[0][0]).toBe("out.d.ts");
-    expect(results[0][1]).toMatchSnapshot();
-  });
-
-  test("Exports Typescript Types With Transforms", () => {
-    const importMap = new Map([
-      [
-        "@player-ui/types",
-        ["Expression", "Asset", "Binding", "AssetWrapper", "Schema.DataType"],
-      ],
-    ]);
-
-    /**
-     *
-     */
-    const transformFunction: TransformFunction = (input, capability) => {
-      if (capability === "Assets") {
-        const ret = { ...input };
-        if (ret.type === "object") {
-          ret.properties.transformed = {
-            required: false,
-            node: { type: "boolean", const: true },
-          };
-        }
-
-        return ret;
-      }
-
-      return input;
-    };
-
-    const sdk = new XLRSDK();
-    sdk.loadDefinitionsFromModule(Types);
-    sdk.loadDefinitionsFromModule(ReferenceAssetsWebPluginManifest);
-    const results = sdk.exportRegistry(
-      "TypeScript",
-      importMap,
-      {
-        pluginFilter: "Types",
-      },
-      [transformFunction],
-    );
-    expect(results[0][0]).toBe("out.d.ts");
-    expect(results[0][1]).toMatchSnapshot();
   });
 });
 
