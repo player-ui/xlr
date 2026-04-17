@@ -1,3 +1,23 @@
+# 0.1.1-next.6 (Fri Apr 17 2026)
+
+### Release Notes
+
+#### Setup 1.0 Release ([#11](https://github.com/player-ui/xlr/pull/11))
+
+1.0 Release
+
+---
+
+#### 💥 Breaking Change
+
+- Setup 1.0 Release [#11](https://github.com/player-ui/xlr/pull/11) ([@KetanReddy](https://github.com/KetanReddy))
+
+#### Authors: 1
+
+- Ketan Reddy ([@KetanReddy](https://github.com/KetanReddy))
+
+---
+
 # 0.1.1-next.5 (Thu Apr 16 2026)
 
 ### Release Notes
