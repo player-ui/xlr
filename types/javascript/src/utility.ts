@@ -30,10 +30,6 @@ export interface PlatformPackages {
 }
 
 export interface Manifest {
-  /**
-   * The version of the manifest format
-   */
-  manifestVersion?: string;
   /** Name of the plugin */
   pluginName: string;
   /** The packages that implement these capabilities, keyed by platform */
@@ -45,11 +41,6 @@ export interface Manifest {
 }
 
 export interface TSManifest {
-  /**
-   * The version of the manifest format
-   */
-  manifestVersion?: string;
-
   /** Name of the plugin */
   pluginName: string;
 
