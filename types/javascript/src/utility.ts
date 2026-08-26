@@ -31,9 +31,7 @@ export interface PlatformPackages {
 
 export interface Manifest {
   /**
-   * The version of the manifest format itself, unrelated to the version of any
-   * package or of Player content schemas. Absent on manifests generated before
-   * the field was introduced.
+   * The version of the manifest format
    */
   manifestVersion?: string;
   /** Name of the plugin */
@@ -48,9 +46,7 @@ export interface Manifest {
 
 export interface TSManifest {
   /**
-   * The version of the manifest format itself, unrelated to the version of any
-   * package or of Player content schemas. Absent on manifests generated before
-   * the field was introduced.
+   * The version of the manifest format
    */
   manifestVersion?: string;
 
