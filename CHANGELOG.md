@@ -1,3 +1,15 @@
+# 1.1.0-next.0 (Fri Aug 28 2026)
+
+#### 🚀 Enhancement
+
+- Manifest enhancement to provide package information [#13](https://github.com/player-ui/xlr/pull/13) ([@cehan-Chloe](https://github.com/cehan-Chloe))
+
+#### Authors: 1
+
+- Chloe ([@cehan-Chloe](https://github.com/cehan-Chloe))
+
+---
+
 # 1.0.0 (Wed Apr 22 2026)
 
 ### Release Notes
