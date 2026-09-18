@@ -52,3 +52,12 @@ export interface TSManifest {
     [capability: string]: Array<NamedType>;
   };
 }
+
+export interface BundledManifestEntry extends PlatformPackages {
+  /** Distinguishes entries when more than one source provides the same type */
+  metaData?: Record<string, unknown>;
+}
+
+export interface BundledManifest {
+  capabilities: Record<string, Array<BundledManifestEntry>>;
+}
