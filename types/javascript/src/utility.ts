@@ -34,6 +34,8 @@ export interface Manifest {
   pluginName: string;
   /** The packages that implement these capabilities, keyed by platform */
   packages?: PlatformPackages;
+  /** Distinguishes this plugin's capabilities from another plugin's of the same type name */
+  metaData?: Record<string, unknown>;
   /** Map of capabilities provided by the plugin to the name of the XLR for the capabilities */
   capabilities?: Map<string, Array<string>>;
   /** CustomPrimitives that are the most basic types in the Payer Ecosystem */
@@ -46,6 +48,9 @@ export interface TSManifest {
 
   /** The packages that implement these capabilities, keyed by platform */
   packages?: PlatformPackages;
+
+  /** Distinguishes this plugin's capabilities from another plugin's of the same type name */
+  metaData?: Record<string, unknown>;
 
   /** Index of capabilities provided by the plugin to the name of the XLR for the capabilities */
   capabilities: {
