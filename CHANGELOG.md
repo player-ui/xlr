@@ -1,3 +1,21 @@
+# 1.1.0 (Wed Sep 23 2026)
+
+#### 🚀 Enhancement
+
+- Manifest enhancement to provide package information [#13](https://github.com/player-ui/xlr/pull/13) ([@cehan-Chloe](https://github.com/cehan-Chloe))
+
+#### 🐛 Bug Fix
+
+- Release main [#15](https://github.com/player-ui/xlr/pull/15) ([@intuit-svc](https://github.com/intuit-svc))
+- add bundled manifest interface [#14](https://github.com/player-ui/xlr/pull/14) ([@cehan-Chloe](https://github.com/cehan-Chloe))
+
+#### Authors: 2
+
+- [@intuit-svc](https://github.com/intuit-svc)
+- Chloe ([@cehan-Chloe](https://github.com/cehan-Chloe))
+
+---
+
 # 1.1.0-next.1 (Wed Sep 23 2026)
 
 #### 🐛 Bug Fix
