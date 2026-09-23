@@ -1,3 +1,15 @@
+# 1.1.0-next.1 (Wed Sep 23 2026)
+
+#### 🐛 Bug Fix
+
+- add bundled manifest interface [#14](https://github.com/player-ui/xlr/pull/14) ([@cehan-Chloe](https://github.com/cehan-Chloe))
+
+#### Authors: 1
+
+- Chloe ([@cehan-Chloe](https://github.com/cehan-Chloe))
+
+---
+
 # 1.1.0-next.0 (Fri Aug 28 2026)
 
 #### 🚀 Enhancement
